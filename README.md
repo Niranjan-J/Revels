@@ -1,2 +1,2 @@
 # DBMS-minor-project
-DBMS minor project repository
+DBMS minor project
