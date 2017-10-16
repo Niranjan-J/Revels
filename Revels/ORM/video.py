@@ -1,38 +1,5 @@
 from ORM.dbconnect import Connector;
 
-
-class Video():
-
-    def __init__(self,*args) :
-
-        #initiates the database Connector
-        self.conn = Connector()
-        if args:
-            self.data = args[0]
-
-    def create(self,data):
-        self.data = data
-
-    def insert(self):
-        self.conn.query("""
-            INSERT INTO Video(title, descr, url, img, user_id) VALUES (%s,%s,%s,%s,%s)
-            """ ,self.data['title'],self.data['descr'],self.data['url'],self.data['img'],int(self.data['user_id']))
-        self.conn.commit()
-
-    def update(self):
-        self.conn.query("""
-            UPDATE Video SET title ="%s",descr ="%s",url ="%s",img ="%s",user_id ="%d"
-            WHERE video_id = %d;
-            """,self.data['video_id'],self.data['title'],self.data['descr'],self.data['url'],self.data['img'],self.data['user_id'] )
-        self.conn.commit()
-
-    def remove(self):
-        self.conn.query("""
-            DELETE FROM Video WHERE video_id = %d
-        """ , self.data['video_id'])
-        self.__del__()
-
-
 class VideoManager():
 
     def __init__(self):
@@ -66,3 +33,23 @@ class VideoManager():
         for row in res :
             videoLi.append(Video(row))
         return videoLi
+
+
+    def insert(self,data):
+        self.conn.query("""
+            INSERT INTO Video(title, descr, url, img, user_id) VALUES (%s,%s,%s,%s,%s)
+            """ ,self.data['title'],self.data['descr'],self.data['url'],self.data['img'],int(self.data['user_id']))
+        self.conn.commit()
+
+    def update(self,data):
+        self.conn.query("""
+            UPDATE Video SET title ="%s",descr ="%s",url ="%s",img ="%s",user_id ="%d"
+            WHERE video_id = %d;
+            """,self.data['video_id'],self.data['title'],self.data['descr'],self.data['url'],self.data['img'],self.data['user_id'] )
+        self.conn.commit()
+
+    def remove(self,data):
+        self.conn.query("""
+            DELETE FROM Video WHERE video_id = %d
+        """ , self.data['video_id'])
+        self.__del__()
