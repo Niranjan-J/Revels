@@ -1,2 +1,2 @@
-# DBMS-minor-project
+# Revels
 DBMS minor project
