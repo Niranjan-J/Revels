@@ -24,32 +24,22 @@ class VideoManager():
             );
             """)
 
-    def getAllVideosOfUser(self, user_id) :
-        res = self.conn.query("""
-            SELECT * FROM Video WHERE user_id = %d;
-        """, user_id)
-        videoLi = []
-        #creates video list
-        for row in res :
-            videoLi.append(Video(row))
-        return videoLi
-
 
     def insert(self,data):
         self.conn.query("""
             INSERT INTO Video(title, descr, url, img, user_id) VALUES (%s,%s,%s,%s,%s)
-            """ ,self.data['title'],self.data['descr'],self.data['url'],self.data['img'],int(self.data['user_id']))
+            """ ,data['title'],data['descr'],data['url'],data['img'],int(data['user_id']))
         self.conn.commit()
 
     def update(self,data):
         self.conn.query("""
             UPDATE Video SET title ="%s",descr ="%s",url ="%s",img ="%s",user_id ="%d"
             WHERE video_id = %d;
-            """,self.data['video_id'],self.data['title'],self.data['descr'],self.data['url'],self.data['img'],self.data['user_id'] )
+            """,data['video_id'],data['title'],data['descr'],data['url'],data['img'],data['user_id'] )
         self.conn.commit()
 
     def remove(self,data):
         self.conn.query("""
             DELETE FROM Video WHERE video_id = %d
-        """ , self.data['video_id'])
+        """ , data['video_id'])
         self.__del__()
