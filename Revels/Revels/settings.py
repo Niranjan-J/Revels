@@ -34,6 +34,8 @@ environ.Env.read_env('.env')
 # Application definition
 
 INSTALLED_APPS = [
+    'Frontend.apps.FrontendConfig',
+    'Auth.apps.AuthConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -80,12 +82,12 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 DATABASES = {
     'default': {
-        'ENGINE':env.str('DATABASE_ENGINE'),
-        'NAME':env.str('DATABASE_NAME'),
-        'USER':env.str('DATABASE_USER'),
-        'PASSWORD':env.str('DATABASE_PASSWORD'),
-        'HOST':env.str('DATABASE_HOST'),
-        'PORT':env.str('DATABASE_PORT'),
+        'ENGINE':'django.db.backends.mysql',
+        'NAME':'RevelsDb',
+        'USER':'root',
+        'PASSWORD':'********',
+        'HOST':'localhost',
+        'PORT':3306,
     }
 }
 
