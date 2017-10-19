@@ -2,10 +2,9 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render
-from ORM.video import VideoManager
+from ORM.video import Video
 # Create your views here.
 
 def index(req):
-    vid = VideoManager()
-    vid.createTable()
+    vid = Video()
     return render(req,'index.html',{ 'data': vid.getallvideos() })

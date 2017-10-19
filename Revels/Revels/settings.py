@@ -83,9 +83,9 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 DATABASES = {
     'default': {
         'ENGINE':'django.db.backends.mysql',
-        'NAME':'RevelsDb',
-        'USER':'root',
-        'PASSWORD':'********',
+        'NAME':'django',
+        'USER':'django',
+        'PASSWORD':'django',
         'HOST':'localhost',
         'PORT':3306,
     }

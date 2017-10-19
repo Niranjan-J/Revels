@@ -1,17 +1,11 @@
-from ORM.dbconnect import Connector;
-
+from ORM.dbconnect import Connector
 
 class Profile():
-    pass
-
-class ProfileManager():
     def __init__(self):
+        self.con = Connector()
 
-        #initiates the database Connector
-        self.conn = Connector
-
-    def create_table(self):
-        self.conn.query("""
+    def createTable(self):
+        self.con.query("""
             CREATE TABLE IF NOT EXISTS User (
             user_id INTEGER AUTO_INCREMENT,
             firstname VARCHAR(50) NOT NULL ,
@@ -25,7 +19,6 @@ class ProfileManager():
             """)
 
     def getAllVideosOfUser(self, user_id) :
-        res = self.conn.query("""
+        return  self.con.query("""
             SELECT * FROM Video WHERE user_id = %d;
-        """, user_id)
-        return res
+            """, user_id)
