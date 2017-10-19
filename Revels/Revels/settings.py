@@ -82,14 +82,16 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 DATABASES = {
     'default': {
-        'ENGINE':'django.db.backends.mysql',
-        'NAME':'django',
-        'USER':'django',
-        'PASSWORD':'django',
-        'HOST':'localhost',
-        'PORT':3306,
+         'ENGINE':env.str('DATABASE_ENGINE').strip(),
+         'NAME':env.str('DATABASE_NAME').strip(),
+         'USER':env.str('DATABASE_USER').strip(),
+         'PASSWORD':env.str('DATABASE_PASSWORD').strip(),
+         'HOST':env.str('DATABASE_HOST').strip(),
+         'PORT':env.int('DATABASE_PORT'),
     }
 }
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
