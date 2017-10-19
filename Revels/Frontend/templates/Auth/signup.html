@@ -6,5 +6,24 @@
 {% endblock %}
 
 {% block body %}
-  
+{% for item in errors %}
+  <h4>{{ item }}</h4>
+{% endfor %}
+  <form action="{% url 'auth:signup' %}" method="post">
+    {% csrf_token %}
+
+    <label for="firstname">firstname</label>
+    <input type="text" name="firstname" value="{{data.firstname}}">
+    <label for="lastname">lastname</label>
+    <input type="text" name="lastname" value="{{data.lastname}}">
+    <label for="username">username</label>
+    <input type="text" name="username" value="{{data.username}}">
+    <label for="email">email</label>
+    <input type="text" name="email" value="{{data.email}}">
+    <label for="password">Password</label>
+    <input type="text" name="password">
+    <label for="gender">gender</label>
+    <input type="text" name="gender" value="{{data.gander}}">
+    <button type="submit" name="submit">submit</button>
+  </form>
 {% endblock %}

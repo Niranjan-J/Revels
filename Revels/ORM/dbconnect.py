@@ -2,7 +2,7 @@ from django.db import connection
 
 class Connector():
     def query(self, query, *args):
-        #the *args here takes extra parameters with the query, and later the values are replaced in the query 
+        #the *args here takes extra parameters with the query, and later the values are replaced in the query
         try:
             with connection.cursor() as cursor:
                 try:
@@ -17,4 +17,3 @@ class Connector():
                     return None
         finally:
             pass
-        

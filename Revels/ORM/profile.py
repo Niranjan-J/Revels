@@ -10,6 +10,7 @@ class Profile():
             user_id INT,
             firstname VARCHAR(50) NOT NULL ,
             lastname VARCHAR(50) ,
+            gender VARCHAR(1) ,
             avatar VARCHAR(200) NOT NULL ,
             PRIMARY KEY (user_id),
             UNIQUE (firstname, lastname, avatar),
