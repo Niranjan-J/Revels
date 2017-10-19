@@ -10,6 +10,7 @@ class Comment():
                 comment_id INTEGER NOT NULL, 
                 text VARCHAR(2000), 
                 timestamp TIMESTAMP NOT NULL,
+                video_id INT,
                 FOREIGN KEY(video_id) REFERENCES Video(video_id)
             );
         """)

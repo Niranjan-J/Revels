@@ -6,8 +6,11 @@ from ORM.tag import Tag
 from ORM.playlist import Playlist
 from ORM.comment import Comment
 from ORM.profile import Profile
+import os
+import environ
 
 if __name__=="__main__":
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Revels.settings")
 
     cat=Category()
     cat.createTable()

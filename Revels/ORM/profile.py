@@ -6,12 +6,11 @@ class Profile():
 
     def createTable(self):
         self.con.query("""
-            CREATE TABLE IF NOT EXISTS User (
-            user_id INTEGER AUTO_INCREMENT,
+            CREATE TABLE IF NOT EXISTS Profile(
+            user_id INT,
             firstname VARCHAR(50) NOT NULL ,
             lastname VARCHAR(50) ,
             avatar VARCHAR(200) NOT NULL ,
-
             PRIMARY KEY (user_id),
             UNIQUE (firstname, lastname, avatar),
             FOREIGN KEY (user_id) REFERENCES User (user_id)

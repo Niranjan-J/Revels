@@ -11,6 +11,7 @@ class Channel():
                 name VARCHAR(200) NOT NULL, 
                 description VARCHAR(1000) NOT NULL, 
                 PRIMARY KEY(channel_id), 
+                user_id INT,
                 FOREIGN KEY(user_id) REFERENCES User(user_id)
             );
         """)
