@@ -5,6 +5,8 @@ from django.shortcuts import render
 from django.views import View
 from django.http import JsonResponse
 from Auth.user import UserManager
+import datetime
+from ORM.sessions import SessionsManager
 
 # Create your views here.
 
@@ -35,3 +37,22 @@ class SignUp(View):
             }
             print(var)
             return render(request,'Auth/signup.html',var)
+
+class SignIn(View):
+
+    def get(self, request):
+        return render(request,'Auth/signin.html')
+
+    def post(self, request):
+
+        data = {
+            'password' : request.POST['password'].strip(),
+            'username' : request.POST['username'].strip(),
+        }
+        userm = UserManager()
+        userm.signInUser(data)
+        response = JsonResponse(data)
+        sessionM = SessionsManager()
+        session_id = sessionM.createSession(data)
+        response.set_cookie('session', session_id)
+        return response

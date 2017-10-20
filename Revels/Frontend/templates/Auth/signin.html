@@ -1,0 +1,22 @@
+
+
+{% extends 'layouts/base.html'%}
+
+{% block title %}
+  Revels - SignUp
+{% endblock %}
+
+{% block body %}
+{% for item in errors %}
+  <h4>{{ item }}</h4>
+{% endfor %}
+  <form action="{% url 'auth:signin' %}" method="post">
+    {% csrf_token %}
+
+    <label for="username">username</label>
+    <input type="text" name="username" value="{{data.username}}">
+    <label for="password">Password</label>
+    <input type="text" name="password">
+    <button type="submit" name="submit">submit</button>
+  </form>
+{% endblock %}
