@@ -6,6 +6,7 @@ from ORM.tag import Tag
 from ORM.playlist import Playlist
 from ORM.comment import Comment
 from ORM.profile import Profile
+from ORM.relations import Relationships
 from ORM.sessions import SessionsManager
 import os
 import environ
@@ -39,3 +40,6 @@ if __name__=="__main__":
 
     sess=SessionsManager()
     sess.createTable()
+
+    rel = Relationships()
+    rel.createUsers_Profile()

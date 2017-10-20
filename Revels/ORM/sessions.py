@@ -11,7 +11,7 @@ class SessionsManager():
 
     def createTable(self) :
         self.con.query("""
-            CREATE TABLE Sessions (
+            CREATE TABLE If NOT EXISTS Sessions (
                 user_id INT,
                 session_id VARCHAR(64),
                 PRIMARY KEY (user_id),
@@ -38,13 +38,16 @@ class SessionsManager():
         else :
             return False;
 
+
     # checks the request for the sessions cookies and matches it with the sessions table
     def checkSession(self,request) :
         s_id = request.COOKIES['session']
         res = self.conn.query("""
-            SELECT * FROM Sessions WHERE session_id = %s
+            SELECT User_Profile.* FROM
+            Sessions NATURAL JOIN User_Profile
+            WHERE session_id = %s
             """,s_id)
         if(len(res) == 1) :
-            return True
+            return res
         else :
-            return False
+            return None

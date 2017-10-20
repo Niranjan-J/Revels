@@ -62,7 +62,7 @@ class Home(View):
     def get(self, request):
         sessionM = SessionsManager()
         res = sessionM.checkSession(request)
-        if(res == True):
+        if(res != None):
             return JsonResponse("Authenticated",safe=False)
         else :
             return JsonResponse("Not Authenticated",safe=False)
