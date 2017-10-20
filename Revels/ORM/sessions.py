@@ -18,16 +18,27 @@ class SessionsManager():
                 FOREIGN KEY (user_id) REFERENCES User(user_id)
             );
             """)
-
-    def createSession(self,data) :
+    # Inserts Session data into the sessions table and returns an unique session id
+    def insertSession(self,data,userM):
         s_id = str(os.urandom(16))
-        userM = UserManager()
         user_id = userM.getUserId(data)
         self.conn.query("""
             INSERT INTO Sessions(user_id,session_id) values (%s,%s)
             """,int(user_id),s_id)
         return s_id;
 
+    # Creates a session and creates the sessions cookies
+    def createSession(self,data,response) :
+
+        userM = UserManager()
+        if(userM.signInUser(data)) :
+            s_id = self.insertSession(data,userM)
+            response.set_cookie('session', s_id)
+            return True
+        else :
+            return False;
+
+    # checks the request for the sessions cookies and matches it with the sessions table
     def checkSession(self,request) :
         s_id = request.COOKIES['session']
         res = self.conn.query("""

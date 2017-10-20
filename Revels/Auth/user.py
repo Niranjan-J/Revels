@@ -43,3 +43,7 @@ class UserManager():
             SELECT * FROM `User` WHERE username = %s and password = %s
             """,data['username'],data['password']
             )
+        if(len(res) == 1) :
+            return True
+        else :
+            return False

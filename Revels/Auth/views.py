@@ -49,10 +49,20 @@ class SignIn(View):
             'password' : request.POST['password'].strip(),
             'username' : request.POST['username'].strip(),
         }
-        userm = UserManager()
-        userm.signInUser(data)
+
         response = JsonResponse(data)
-        sessionM = ORM.sessions.SessionsManager()
-        session_id = sessionM.createSession(data)
-        response.set_cookie('session', session_id)
-        return response
+        sessionM = SessionsManager()
+        status = sessionM.createSession(data,response)
+
+        if(status == True) :
+            return response
+
+class Home(View):
+
+    def get(self, request):
+        sessionM = SessionsManager()
+        res = sessionM.checkSession(request)
+        if(res == True):
+            return JsonResponse("Authenticated",safe=False)
+        else :
+            return JsonResponse("Not Authenticated",safe=False)
