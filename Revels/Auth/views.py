@@ -26,7 +26,7 @@ class SignUp(View):
             'gender' : request.POST['gender'].strip(),
         }
         userm = UserManager()
-        errors = userm.checkUserData(data)
+        errors = userm.validate(data)
         if(len(errors) == 0) :
             userm.createUser(data)
             return JsonResponse(data)
@@ -52,7 +52,7 @@ class SignIn(View):
         userm = UserManager()
         userm.signInUser(data)
         response = JsonResponse(data)
-        sessionM = SessionsManager()
+        sessionM = ORM.sessions.SessionsManager()
         session_id = sessionM.createSession(data)
         response.set_cookie('session', session_id)
         return response

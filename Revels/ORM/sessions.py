@@ -1,6 +1,6 @@
-from ORM.dbconnect import Connector;
+from ORM.dbconnect import Connector
+from Auth.user import UserManager
 import os
-from Auth.user import UserManager;
 
 class SessionsManager():
 

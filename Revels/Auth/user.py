@@ -1,38 +1,45 @@
 from ORM.dbconnect import Connector
 from http.cookies import SimpleCookie
+from ORM.user import User
+from ORM.profile import Profile
 
 class UserManager():
 
     def __init__(self):
         self.con = Connector()
 
-    def checkUserData(self,data):
+    # This function performs validation checks on user data
+    def validate(self,data):
         error = []
         if(data['email'] == None or data['email'] == '') :
             error.append("Please Enter an email address.")
         return error
 
+    # returns user_id for a user data
     def getUserId(self,data):
+        us = User()
         res = self.con.query("""
             SELECT * FROM `User` WHERE username = %s
             """,data['username']
             )
         return res[0][0];
 
+    #creates entry in USers and PRofile table
     def createUser(self,data):
-        self.con.query("""
-            INSERT INTO User(email,username,password) VALUES (%s,%s,%s)
-            """,data['email'],data['username'],data['password']
-            )
+
+        #Creates Entry in users table
+        usr = User()
+        usr.createUser(data)
+
+        # getes the user_id
         res = getUserId(data)
-        self.con.query("""
-            INSERT INTO Profile(user_id,firstname,lastname,gender,avatar) VALUES (%s,%s,%s,%s,%s)
-            """,res,data['firstname'],data['lastname'],data['gender'],"Please change it"
-            )
+
+        #Creates Entry in profile table
+        prf = Profile()
+        prf.createProfile(data)
 
     def signInUser(self,data):
         res = self.con.query("""
             SELECT * FROM `User` WHERE username = %s and password = %s
             """,data['username'],data['password']
             )
-        print(res[0][1])

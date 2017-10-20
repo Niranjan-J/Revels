@@ -22,3 +22,9 @@ class Profile():
         return  self.con.query("""
             SELECT * FROM Video WHERE user_id = %d;
             """, user_id)
+
+    def createProfile(self,data):
+        self.con.query("""
+            INSERT INTO Profile(user_id,firstname,lastname,gender,avatar) VALUES (%s,%s,%s,%s,%s)
+            """,res,data['firstname'],data['lastname'],data['gender'],"Please change it"
+            )

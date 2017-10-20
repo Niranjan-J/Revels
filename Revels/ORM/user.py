@@ -17,4 +17,9 @@ class User():
             UNIQUE (username, email, password)
             );
             """)
-        
+
+    def createUser(self,data):
+        self.con.query("""
+            INSERT INTO User(email,username,password) VALUES (%s,%s,%s)
+            """,data['email'],data['username'],data['password']
+            )
