@@ -5,7 +5,7 @@ class Relationships():
     def __init__(self):
 
         #initiates the database Connector
-        self.conn = Connector()
+        self.con = Connector()
 
     def createUsers_Profile(self) :
         self.con.query("""
