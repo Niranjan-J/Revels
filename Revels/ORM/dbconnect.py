@@ -44,6 +44,7 @@ class Connector():
                 try:
                     cursor.execute(sqlquery,args)
                     data=self.dictfetchall(cursor)
+                    print("Query Sucessfully Executed.")
                     return data
                 except Exception as e:
                     return e

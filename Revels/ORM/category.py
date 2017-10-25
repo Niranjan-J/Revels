@@ -14,8 +14,11 @@ class Category():
             );
         """)
 
-    def insertCategory(self, data):
-        self.con.insert("""
+    def insert(self, data):
+        self.con.modify("""
             INSERT INTO Category(text)
             VALUES(%s);
         """,data["text"])
+
+    def getall(self):
+        return self.con.query("SELECT * FROM Category;")
