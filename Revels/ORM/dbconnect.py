@@ -1,7 +1,7 @@
 from django.db import connection, transaction
 
 class Connector():
-    
+
     def dictfetchall(self,cursor):
         # Return all rows from a cursor as a dict
         columns = [col[0] for col in cursor.description]
@@ -11,12 +11,12 @@ class Connector():
         ]
 
     def checkdict(self,data):
-        #check whether dictionary or not 
+        #check whether dictionary or not
         if type(data) is dict:
             return True
         else:
             return False
-    
+
     def create(self,sqlquery):
         try:
             with connection.cursor() as cursor:
@@ -34,6 +34,7 @@ class Connector():
                     cursor.execute(sqlquery,args)
                     print("Sucessfully Modified.")
                 except Exception as e:
+                    print(e)
                     return e
         finally:
             pass

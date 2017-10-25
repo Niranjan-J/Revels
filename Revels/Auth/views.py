@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 from django.views import View
 from django.http import JsonResponse
-from Auth.user import UserManager
+from ORM.user import User
 import datetime
 from ORM.sessions import SessionsManager
 
@@ -16,7 +16,7 @@ class SignUp(View):
         return render(request,'Auth/signup.html')
 
     def post(self, request):
-
+        user = User()
         data = {
             'firstname' : request.POST['firstname'].strip(),
             'lastname' : request.POST['lastname'].strip(),
@@ -25,17 +25,16 @@ class SignUp(View):
             'username' : request.POST['username'].strip(),
             'gender' : request.POST['gender'].strip(),
         }
-        userm = UserManager()
-        errors = userm.validate(data)
-        if(len(errors) == 0) :
-            userm.createUser(data)
+
+        res = user.createUser(data)
+
+        if res == None :
             return JsonResponse(data)
         else :
             var = {
-                'errors' : errors,
+                'error' : res,
                 'data' : data
             }
-            print(var)
             return render(request,'Auth/signup.html',var)
 
 class SignIn(View):
@@ -47,15 +46,29 @@ class SignIn(View):
 
         data = {
             'password' : request.POST['password'].strip(),
-            'username' : request.POST['username'].strip(),
+            'email' : request.POST['email'].strip(),
         }
 
         response = JsonResponse(data)
         sessionM = SessionsManager()
-        status = sessionM.createSession(data,response)
 
-        if(status == True) :
+        response = sessionM.createSession(data,response)
+
+        if response != None :
             return response
+        else :
+            var = {
+                'error' : 'res'
+            }
+            return render(request,'Auth/signin.html',var)
+
+def SignOut(request):
+        response =  render(request,'Auth/signin.html')
+        try :
+            response.delete_cookie('session')
+        except :
+            pass
+        return response
 
 class Home(View):
 

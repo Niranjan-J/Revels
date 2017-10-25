@@ -6,9 +6,7 @@
 {% endblock %}
 
 {% block body %}
-{% for item in errors %}
-  <h4>{{ item }}</h4>
-{% endfor %}
+<h4>{{ error }}</h4>
   <form action="{% url 'auth:signup' %}" method="post">
     {% csrf_token %}
 
