@@ -5,7 +5,7 @@ class Tag():
         self.con=Connector()
     
     def createTable(self):
-        self.con.query("""
+        self.con.create("""
             CREATE TABLE IF NOT EXISTS Tag( 
                 text VARCHAR(200) NOT NULL
             );
