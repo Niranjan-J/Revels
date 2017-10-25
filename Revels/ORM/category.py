@@ -23,8 +23,8 @@ class Category():
     def getall(self):
         return self.con.query("SELECT * FROM Category;")
 
-    def get_CatVideos(self,catName)
-        res = con.query("""
+    def get_CatVideos(self,catName):
+        res = self.con.query("""
             SELECT Video.*,Category.text FROM Video,Category,Vid_Cat
             WHERE Video.video_id=Vid_Cat.Video_id
             AND Vid_Cat. cat_id=Category.cat_id AND Category.text=%s
