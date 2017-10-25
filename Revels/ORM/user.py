@@ -6,7 +6,7 @@ class User():
         self.con = Connector()
 
     def createTable(self):
-        self.con.query("""
+        self.con.create("""
             CREATE TABLE IF NOT EXISTS User (
             user_id INTEGER AUTO_INCREMENT,
             username VARCHAR(50) NOT NULL ,
@@ -19,7 +19,7 @@ class User():
             """)
 
     def createUser(self,data):
-        self.con.query("""
+        self.con.modify("""
             INSERT INTO User(email,username,password) VALUES (%s,%s,%s)
             """,data['email'],data['username'],data['password']
             )

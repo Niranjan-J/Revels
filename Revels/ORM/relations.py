@@ -1,4 +1,4 @@
-from ORM.dbconnect import Connector;
+from ORM.dbconnect import Connector
 
 class Relationships():
 

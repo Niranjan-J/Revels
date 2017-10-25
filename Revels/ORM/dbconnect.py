@@ -34,7 +34,7 @@ class Connector():
                     cursor.execute(sqlquery,args)
                     print("Sucessfully Modified.")
                 except Exception as e:
-                    print(e)
+                    return e
         finally:
             pass
 
