@@ -1,7 +1,7 @@
 from ORM.dbconnect import Connector
 
 class Category():
-    
+
     def __init__(self):
         self.con = Connector()
 
@@ -22,3 +22,11 @@ class Category():
 
     def getall(self):
         return self.con.query("SELECT * FROM Category;")
+
+    def get_CatVideos(self,catName)
+        res = con.query("""
+            SELECT Video.*,Category.text FROM Video,Category,Vid_Cat
+            WHERE Video.video_id=Vid_Cat.Video_id
+            AND Vid_Cat. cat_id=Category.cat_id AND Category.text=%s
+            """,catname)
+        return res

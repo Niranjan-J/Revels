@@ -14,16 +14,13 @@ from ORM.relations import Relationships
 from ORM.sessions import SessionsManager
 # Create your views here.
 
-con=Connector()
+cat=Category()
 
 def index(req):
-    cat=Category()
+
     return render(req,'Frontend/index.html',{"category":cat.getall()})
 
 def catvideo(req,catname):
-    data=con.query("""
-        SELECT Video.*,Category.text FROM Video,Category,Vid_Cat 
-        WHERE Video.video_id=Vid_Cat.Video_id 
-        AND Vid_Cat. cat_id=Category.cat_id AND Category.text=%s
-        """,catname)
+    
+    data=cat.get_CatVideos(catname)
     return render(req,'Frontend/category.html',{"data": data})

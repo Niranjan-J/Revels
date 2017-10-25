@@ -16,7 +16,7 @@ if __name__=="__main__":
 
     cat=Category()
     cat.createTable()
-    
+
     user=User()
     user.createTable()
 
@@ -42,4 +42,4 @@ if __name__=="__main__":
     sess.createTable()
 
     rel = Relationships()
-    rel.createUsers_Profile()
+    rel.create_UsersProfile()
