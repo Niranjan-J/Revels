@@ -6,8 +6,8 @@ class Relationships():
         #initiates the database Connector
         self.con = Connector()
 
-    def createUsers_Profile(self) :
-        self.con.query("""
-            CREATE VIEW If NOT EXISTS User_Profile AS
-            SELECT * FROM User NATURAL JOIN Profile;
-            """)
+        def create_UsersProfile(self) :
+            self.con.query("""
+                CREATE VIEW If NOT EXISTS User_Profile AS
+                SELECT * FROM User NATURAL JOIN Profile;
+                """)
