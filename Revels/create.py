@@ -16,7 +16,7 @@ if __name__=="__main__":
 
     cat=Category()
     cat.createTable()
-
+    
     user=User()
     user.createTable()
 

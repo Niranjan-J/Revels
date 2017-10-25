@@ -10,7 +10,7 @@ class SessionsManager():
         self.conn = Connector()
 
     def createTable(self) :
-        self.con.query("""
+        self.conn.query("""
             CREATE TABLE If NOT EXISTS Sessions (
                 user_id INT,
                 session_id VARCHAR(64),
@@ -25,7 +25,7 @@ class SessionsManager():
         self.conn.query("""
             INSERT INTO Sessions(user_id,session_id) values (%s,%s)
             """,int(user_id),s_id)
-        return s_id;
+        return s_id
 
     # Creates a session and creates the sessions cookies
     def createSession(self,data,response) :
@@ -36,7 +36,7 @@ class SessionsManager():
             response.set_cookie('session', s_id)
             return True
         else :
-            return False;
+            return False
 
 
     # checks the request for the sessions cookies and matches it with the sessions table

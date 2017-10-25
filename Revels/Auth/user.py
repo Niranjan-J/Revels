@@ -22,7 +22,7 @@ class UserManager():
             SELECT * FROM `User` WHERE username = %s
             """,data['username']
             )
-        return res[0][0];
+        return res[0]['user_id']
 
     #creates entry in USers and PRofile table
     def createUser(self,data):
@@ -32,7 +32,7 @@ class UserManager():
         usr.createUser(data)
 
         # getes the user_id
-        res = getUserId(data)
+        res = self.getUserId(data)
 
         #Creates Entry in profile table
         prf = Profile()

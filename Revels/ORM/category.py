@@ -6,10 +6,16 @@ class Category():
         self.con = Connector()
 
     def createTable(self):
-        self.con.query("""
+        self.con.create("""
             CREATE TABLE IF NOT EXISTS Category(
                 cat_id INTEGER AUTO_INCREMENT,
                 text VARCHAR(200) NOT NULL,
                 PRIMARY KEY(cat_id)
             );
         """)
+
+    def insertCategory(self, data):
+        self.con.insert("""
+            INSERT INTO Category(text)
+            VALUES(%s);
+        """,data["text"])
