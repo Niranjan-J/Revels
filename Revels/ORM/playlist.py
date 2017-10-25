@@ -5,7 +5,7 @@ class Playlist():
         self.con = Connector()
 
     def createTable(self):
-        self.con.query("""
+        self.con.create("""
             CREATE TABLE IF NOT EXISTS Playlist( 
                 playlist_id INTEGER NOT NULL,
                 name VARCHAR(200) NOT NULL,

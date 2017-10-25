@@ -5,7 +5,7 @@ class Channel():
         self.con=Connector()
 
     def createTable(self):
-        self.con.query("""
+        self.con.create("""
             CREATE TABLE IF NOT EXISTS Channel( 
                 channel_id INTEGER AUTO_INCREMENT,
                 name VARCHAR(200) NOT NULL, 

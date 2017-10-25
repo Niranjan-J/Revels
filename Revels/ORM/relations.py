@@ -1,9 +1,8 @@
-from ORM.dbconnect import Connector;
+from ORM.dbconnect import Connector
 
 class Relationships():
 
     def __init__(self):
-
         #initiates the database Connector
         self.con = Connector()
 

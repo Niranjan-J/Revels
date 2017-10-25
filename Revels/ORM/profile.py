@@ -5,7 +5,7 @@ class Profile():
         self.con = Connector()
 
     def createTable(self):
-        self.con.query("""
+        self.con.create("""
             CREATE TABLE IF NOT EXISTS Profile(
             user_id INT,
             firstname VARCHAR(50) NOT NULL ,

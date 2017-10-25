@@ -27,23 +27,14 @@ class Connector():
         finally:
             pass
 
-    def insert(self,sqlquery,*args):
+    def modify(self,sqlquery,*args):
         try:
             with connection.cursor() as cursor:
                 try:
                     cursor.execute(sqlquery,args)
+                    print("Sucessfully Modified.")
                 except Exception as e:
-                    print(e)
-        finally:
-            pass
-
-    def update(self,sqlquery,*args):
-        try:
-            with connection.cursor() as cursor:
-                try:
-                    cursor.execute(sqlquery,args)
-                except Exception as e:
-                    print(e)
+                    return e
         finally:
             pass
 
