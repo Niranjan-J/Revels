@@ -1,6 +1,5 @@
 from ORM.dbconnect import Connector
 from http.cookies import SimpleCookie
-from ORM.user import User
 from ORM.profile import Profile
 
 
@@ -24,30 +23,35 @@ class User():
 
     # returns user_id for a user data
     def getUserId(self,data):
-        us = User()
         res = self.con.query("""
-            SELECT * FROM `User` WHERE username = %s
-            """,data['username']
+            SELECT * FROM `User` WHERE email = %s
+            """,data['email']
             )
         return res[0]['user_id']
 
     #creates entry in USers and PRofile table
     def createUser(self,data):
-
-        #Creates Entry in users table
-        self.insertUser(data)
-
-        # get's the user_id
-        res = self.getUserId(data)
-
-        #Creates Entry in profile table
         prf = Profile()
-        prf.createProfile(data)
+        #Creates Entry in users table
+        res = self.insertUser(data)
+        if res == None :
+            # get's the user_id
+            user_id = self.getUserId(data)
+            #Creates Entry in profile table
+            res1 = prf.createProfile(data,user_id)
+
+            if res1 == None :
+                return res1;
+
+            #returns None if the transaction completes without errors
+            return None
+        else :
+            return res;
 
     def signInUser(self,data):
         res = self.con.query("""
-            SELECT * FROM `User` WHERE username = %s and password = %s
-            """,data['username'],data['password']
+            SELECT * FROM `User` WHERE email = %s and password = %s
+            """,data['email'],data['password']
             )
         if(len(res) == 1) :
             return True
@@ -55,7 +59,12 @@ class User():
             return False
 
     def insertUser(self,data):
-        self.con.query("""
+        res = self.con.modify("""
             INSERT INTO User(email,username,password) VALUES (%s,%s,%s)
             """,data['email'],data['username'],data['password']
             )
+        # returns None if there's no error
+        if res == None :
+            return None
+        else :
+            return res

@@ -19,12 +19,17 @@ class Profile():
             """)
 
     def getAllVideosOfUser(self, user_id) :
-        return  self.con.query("""
+        return self.con.query("""
             SELECT * FROM Video WHERE user_id = %d;
             """, user_id)
 
-    def createProfile(self,data):
-        self.con.query("""
+    def createProfile(self,data,user_id):
+        res = self.con.query("""
             INSERT INTO Profile(user_id,firstname,lastname,gender,avatar) VALUES (%s,%s,%s,%s,%s)
-            """,res,data['firstname'],data['lastname'],data['gender'],"Please change it"
+            """,user_id,data['firstname'],data['lastname'],data['gender'],"Please change it"
             )
+        # returns None if there's no error
+        if res == None :
+            return None
+        else :
+            return res

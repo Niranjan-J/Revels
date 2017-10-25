@@ -1,5 +1,5 @@
 from ORM.dbconnect import Connector
-from Auth.user import UserManager
+from ORM.user import User
 import os
 
 class SessionsManager():
@@ -19,35 +19,50 @@ class SessionsManager():
             """)
 
     # Inserts Session data into the sessions table and returns an unique session id
-    def insertSession(self,data,userM):
+    def insertSession(self,data,user):
         s_id = str(os.urandom(16))
-        user_id = userM.getUserId(data)
-        self.conn.modify("""
+        user_id = user.getUserId(data)
+
+        # Deletes previous sessions of the user
+        # self.conn.modify("""
+        # DELETE FROM Sessions WHERE user_id = %s
+        # """, int(user_id))
+
+        # inserts the session data
+        res = self.conn.modify("""
             INSERT INTO Sessions(user_id,session_id) values (%s,%s)
-            """,int(user_id),s_id)
-        return s_id
+            """, int(user_id), s_id)
+
+        if res == None :
+            return s_id
+        else :
+            return None
 
     # Creates a session and creates the sessions cookies
     def createSession(self,data,response) :
 
-        userM = UserManager()
-        if(userM.signInUser(data)) :
-            s_id = self.insertSession(data,userM)
+        user = User()
+        if(user.signInUser(data)) :
+            s_id = self.insertSession(data,user)
+            print('hello')
             response.set_cookie('session', s_id)
-            return True
+            return response
         else :
-            return False
+            return None
 
 
     # checks the request for the sessions cookies and matches it with the sessions table
     def checkSession(self,request) :
-        s_id = request.COOKIES['session']
-        res = self.conn.query("""
-            SELECT User_Profile.* FROM
-            Sessions NATURAL JOIN User_Profile
-            WHERE session_id = %s
-            """,s_id)
-        if(len(res) == 1) :
-            return res
-        else :
+        try :
+            s_id = request.COOKIES['session']
+            res = self.conn.query("""
+                SELECT User_Profile.* FROM
+                Sessions NATURAL JOIN User_Profile
+                WHERE session_id = %s
+                """,s_id)
+            if(len(res) == 1) :
+                return res[0]['username']
+            else :
+                return None
+        except :
             return None
