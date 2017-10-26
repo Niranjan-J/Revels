@@ -43,3 +43,7 @@ if __name__=="__main__":
 
     rel = Relationships()
     rel.create_UsersProfile()
+    rel.create_Like()
+    rel.create_Pl_Vid()
+    rel.create_Subscription()
+    rel.create_Vid_Cat()

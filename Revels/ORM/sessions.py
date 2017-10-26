@@ -23,10 +23,10 @@ class SessionsManager():
         s_id = str(os.urandom(16))
         user_id = user.getUserId(data)
 
-        # Deletes previous sessions of the user
-        # self.conn.modify("""
-        # DELETE FROM Sessions WHERE user_id = %s
-        # """, int(user_id))
+        #Deletes previous sessions of the user
+        self.conn.modify("""
+            DELETE FROM Sessions WHERE user_id = %s
+        """, int(user_id))
 
         # inserts the session data
         res = self.conn.modify("""
@@ -44,7 +44,6 @@ class SessionsManager():
         user = User()
         if(user.signInUser(data)) :
             s_id = self.insertSession(data,user)
-            print('hello')
             response.set_cookie('session', s_id)
             return response
         else :
@@ -61,7 +60,7 @@ class SessionsManager():
                 WHERE session_id = %s
                 """,s_id)
             if(len(res) == 1) :
-                return res[0]['username']
+                return res
             else :
                 return None
         except :

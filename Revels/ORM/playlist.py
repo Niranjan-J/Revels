@@ -7,9 +7,10 @@ class Playlist():
     def createTable(self):
         self.con.create("""
             CREATE TABLE IF NOT EXISTS Playlist( 
-                playlist_id INTEGER NOT NULL,
+                playlist_id INT,
                 name VARCHAR(200) NOT NULL,
                 channel_id INT,
-                FOREIGN KEY (channel_id) REFERENCES Channel (channel_id)
+                PRIMARY KEY(playlist_id),
+                FOREIGN KEY(channel_id) REFERENCES Channel (channel_id)
             );
         """)

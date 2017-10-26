@@ -12,11 +12,10 @@ class Video():
               title    VARCHAR(200) NOT NULL,
               descr    TEXT(1000),
               url      VARCHAR(200) NOT NULL,
-              img      VARCHAR(200) NOT NULL,
-              user_id  INT          NOT NULL,
+              user_id  INT NOT NULL,
 
               PRIMARY KEY (video_id),
-              UNIQUE (user_id, url, title, img),
+              UNIQUE (user_id, url, title),
               FOREIGN KEY (user_id) REFERENCES User (user_id)
             );
             """)
@@ -24,14 +23,14 @@ class Video():
 
     def insert(self,data):
         self.con.modify("""
-            INSERT INTO Video(title, descr, url, img, user_id) VALUES (%s,%s,%s,%s,%s)
-            """ ,data['title'],data['descr'],data['url'],data['img'],int(data['user_id']))
+            INSERT INTO Video(title, descr, url, user_id) VALUES (%s,%s,%s,%s)
+            """ ,data['title'],data['descr'],data['url'],int(data['user_id']))
 
     def update(self,data):
         self.con.modify("""
-            UPDATE Video SET title ="%s",descr ="%s",url ="%s",img ="%s",user_id ="%d"
+            UPDATE Video SET title ="%s",descr ="%s",url ="%s",user_id ="%d"
             WHERE video_id = %d;
-            """,data['video_id'],data['title'],data['descr'],data['url'],data['img'],data['user_id'] )
+            """,data['video_id'],data['title'],data['descr'],data['url'],data['user_id'] )
 
     def remove(self,data):
         self.con.modify("""
@@ -40,3 +39,6 @@ class Video():
 
     def getallvideos(self):
         return self.con.query("SELECT * FROM Video;")
+
+    def get_vid_id(self,data):
+        return  self.con.query("SELECT video_id FROM Video WHERE url=%s",data['url'])
