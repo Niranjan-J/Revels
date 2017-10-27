@@ -21,7 +21,7 @@ vid=Video()
 def index(req):
     return render(req,'Frontend/index.html',{"category":cat.getall()})
 
-def catvideo(req,catname):   
+def catvideo(req,catname):
     data=cat.get_CatVideos(catname)
     return render(req,'Frontend/category.html',{"data": data})
 
@@ -33,9 +33,9 @@ def upload(req):
             return render(req,'Frontend/upload.html',{'category':catlist})
         elif req.method=='POST':
             data={
-                'title': req.POST['title'].strip(), 
-                'descr':req.POST['descr'].strip(), 
-                'url': req.POST['url'].strip(), 
+                'title': req.POST['title'].strip(),
+                'descr':req.POST['descr'].strip(),
+                'url': req.POST['url'].strip(),
                 'user_id': uid[0]['user_id'],
                 'vidcatlist':req.POST.getlist('box')
             }
@@ -60,7 +60,7 @@ def showChannels(req):
         else:
             return render(req,'Frontend/channels.html',{'msg':"Your Channels:",'chlist': chlist})
     else:
-        return redirect('auth:signin') 
+        return redirect('auth:signin')
 
 def createChannel(req):
     uid=sess.checkSession(req)
@@ -91,7 +91,7 @@ def getChannel(req,chname):
     if uid!=None:
         data=con.query("""
             SELECT Playlist.playlist_id,Playlist.name AS plname,Channel.* FROM Channel,Playlist
-            WHERE Channel.channel_id=Playlist.channel_id AND 
+            WHERE Channel.channel_id=Playlist.channel_id AND
             Channel.name=%s AND Channel.user_id=%s;
         """,chname,uid[0]['user_id'])
         plvideo=[]
@@ -115,3 +115,32 @@ def createPlaylist(req,chid):
             return render(req,'Frontend/createplaylist.html',{'ch':ch,'msg':"Playlist Successfully created !!"})
     else:
         return redirect('auth:signin')
+
+def viewVideo(req,video_id):
+
+        vid = con.query("SELECT * FROM Video NATURAL JOIN User_Profile WHERE video_id=%s",int(video_id))
+        comm = con.query("SELECT * FROM  User_Profile NATURAL JOIN Comment where Comment.video_id = %s", vid[0]['video_id'])
+
+        if req.method=='GET':
+
+            var = {
+                'video' : vid[0],
+                'comments' : comm,
+            }
+            return render(req,'Frontend/video.html',var)
+        elif req.method=='POST':
+
+            uid=sess.checkSession(req)
+            if uid!=None:
+                comm = req.POST['comment'].strip()
+                con.modify("""
+                    INSERT INTO Comment(text, timestamp, video_id, user_id) VALUES (%s,CURRENT_TIMESTAMP(),%s,%s)
+                """, comm, vid[0]['video_id'],uid[0]['user_id'])
+                comm = con.query("SELECT * FROM  User_Profile NATURAL JOIN Comment where Comment.video_id = %s", vid[0]['video_id'])
+                var = {
+                    'video' : vid[0],
+                    'comments' : comm,
+                }
+                return render(req,'Frontend/video.html',var)
+            else:
+                return redirect('auth:signin')

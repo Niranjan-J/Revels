@@ -3,7 +3,8 @@ from . import views
 
 urlpatterns=[
     url(r'^videos/$',views.index,name="index"),
-    url(r'^videos/(?P<catname>[^/]+)/$',views.catvideo,name="catvideo"),
+    url(r'^videos/(?P<video_id>[^/]+)/$',views.viewVideo,name="viewVideo"),
+    url(r'^categories/(?P<catname>[^/]+)/$',views.catvideo,name="catvideo"),
     url(r'^upload/$',views.upload,name="upload"),
     url(r'^channels/$',views.showChannels,name='showChannels'),
     url(r'^channels/(?P<chname>[^/]+)/$',views.getChannel,name='getChannel'),
