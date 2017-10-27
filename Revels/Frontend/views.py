@@ -49,5 +49,69 @@ def upload(req):
                 """,id[0]['video_id'],int(catid))
             return render(req,'Frontend/upload.html',{'category':catlist,'msg':"Uploaded Sucessfully"})
     else:
-        return redirect('/auth/signin')
+        return redirect('auth:signin')
 
+def showChannels(req):
+    uid=sess.checkSession(req)
+    if uid!=None:
+        chlist=con.query("SELECT name FROM Channel WHERE user_id=%s",uid[0]['user_id'])
+        if len(chlist)==0:
+            return render(req,'Frontend/channels.html',{'msg': "You don\'t have any Channels..."})
+        else:
+            return render(req,'Frontend/channels.html',{'msg':"Your Channels:",'chlist': chlist})
+    else:
+        return redirect('auth:signin') 
+
+def createChannel(req):
+    uid=sess.checkSession(req)
+    if uid!=None:
+        if req.method=='GET':
+            return render(req,'Frontend/createchannel.html',{})
+        elif req.method=='POST':
+            data={
+                'name': req.POST['name'].strip(),
+                'descr':req.POST['descr'].strip(),
+                'defpl':req.POST['defpl'].strip(),
+            }
+            chid=len(con.query("SELECT channel_id FROM Channel;"))+1
+            con.modify("""
+                INSERT INTO Channel(name,description,user_id)
+                VALUES(%s,%s,%s);
+            """,data['name'],data['descr'],uid[0]['user_id'])
+            con.modify("""
+                INSERT INTO Playlist(name,channel_id)
+                VALUES(%s,%s);
+            """,data['defpl'],chid)
+            return render(req,'Frontend/createchannel.html',{'msg':"Channel Successfully created !!"})
+    else:
+        return redirect('auth:signin')
+
+def getChannel(req,chname):
+    uid=sess.checkSession(req)
+    if uid!=None:
+        data=con.query("""
+            SELECT Playlist.playlist_id,Playlist.name AS plname,Channel.* FROM Channel,Playlist
+            WHERE Channel.channel_id=Playlist.channel_id AND 
+            Channel.name=%s AND Channel.user_id=%s;
+        """,chname,uid[0]['user_id'])
+        plvideo=[]
+        for item in data:
+            item['videos']=con.query("SELECT Video.* FROM Video NATURAL JOIN Pl_Vid WHERE playlist_id=%s",item['playlist_id'])
+        return render(req,'Frontend/mychannel.html',{'data':data })
+    else:
+        return redirect('auth:signin')
+
+def createPlaylist(req,chid):
+    uid=sess.checkSession(req)
+    if uid!=None:
+        ch=con.query("SELECT channel_id,name FROM Channel WHERE channel_id=%s",chid)
+        if req.method=='GET':
+            return render(req,'Frontend/createplaylist.html',{'ch':ch})
+        elif req.method=='POST':
+            con.modify("""
+                INSERT INTO Playlist(name,channel_id)
+                VALUES(%s,%s);
+            """,req.POST['name'].strip(),ch[0]['channel_id'])
+            return render(req,'Frontend/createplaylist.html',{'ch':ch,'msg':"Playlist Successfully created !!"})
+    else:
+        return redirect('auth:signin')

@@ -1,0 +1,20 @@
+{% extends 'layouts/base.html' %}
+
+
+{% block title %}
+    {{ ch.0.name }}
+{% endblock title %}
+    
+
+{% block body %}
+    <h3>Create Playlist:</h3>
+    <form action="{% url 'createPlaylist' ch.0.channel_id %}" method="post">
+        {% csrf_token %}
+        <label for="name">Playlist Name: </label>
+        <input type="text" name="name" required><br>
+        <input type="submit" name="submit" value="Create"><br>    
+    </form><br>
+    {{ msg }}<br>
+    <a href="{% url 'getChannel' ch.0.name %}">Go To Your Channel...</a>
+{% endblock body %}
+    

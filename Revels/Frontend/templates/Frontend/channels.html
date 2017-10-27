@@ -1,0 +1,16 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}
+    Your Channels
+{% endblock title %}
+    
+{% block body %}
+    <h3>{{ msg }}</h3>
+    <ul>
+        {% for ch in chlist %}
+            <li><a href="{% url 'getChannel' ch.name %}">{{ ch.name }}</a></li>
+        {% endfor %}
+    </ul>        
+    <a href="{% url 'createChannel' %}"><button>+ New Channel</button></a>    
+{% endblock body %}
+    

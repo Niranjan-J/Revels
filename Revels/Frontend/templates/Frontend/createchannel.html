@@ -1,0 +1,24 @@
+{% extends 'layouts/base.html' %}
+
+
+{% block title %}
+    Create Channel
+{% endblock title %}
+    
+
+{% block body %}
+    <h3>Create Channel:</h3>
+    <form action="{% url 'createChannel' %}" method="post">
+        {% csrf_token %}
+        <label for="name">Channel Name: </label>
+        <input type="text" name="name" required><br>
+        <label for="descr">Description:</label>
+        <input type="text" name="descr" required><br> 
+        <label for="defpl">Default Playlist Name: </label>
+        <input type="text" name="defpl" required><br><br>
+        <input type="submit" name="submit" value="Create"><br>    
+    </form><br>
+    {{ msg }}<br>
+    <a href="{% url 'showChannels' %}">Go To Your Channels...</a>
+{% endblock body %}
+    
