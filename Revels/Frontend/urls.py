@@ -6,7 +6,7 @@ urlpatterns=[
     url(r'^videos/(?P<catname>[^/]+)/$',views.catvideo,name="catvideo"),
     url(r'^upload/$',views.upload,name="upload"),
     url(r'^channels/$',views.showChannels,name='showChannels'),
-    url(r'^(?P<chname>[^/]+)/$',views.getChannel,name='getChannel'),
+    url(r'^channels/(?P<chname>[^/]+)/$',views.getChannel,name='getChannel'),
     url(r'^create_channel/$',views.createChannel, name='createChannel'),
     url(r'^(?P<chid>[^/]+)/create_playlist/$',views.createPlaylist,name='createPlaylist')
 ]

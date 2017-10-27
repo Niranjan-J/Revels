@@ -47,6 +47,7 @@ class Relationships():
             CREATE TABLE IF NOT EXISTS Pl_Vid(
                 video_id INT,
                 playlist_id INT,
+                UNIQUE(playlist_id,video_id),
                 FOREIGN KEY(video_id) REFERENCES Video(video_id),
                 FOREIGN KEY(playlist_id) REFERENCES Playlist(playlist_id)
             );
