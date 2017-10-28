@@ -28,6 +28,7 @@ if __name__=="__main__":
 
     tg=Tag()
     tg.createTable()
+    tg.create_Procs()
 
     pl=Playlist()
     pl.createTable()

@@ -10,12 +10,14 @@ from ORM.tag import Tag
 from ORM.playlist import Playlist
 from ORM.comment import Comment
 from ORM.profile import Profile
+from ORM.tag import Tag
 from ORM.relations import Relationships
 from ORM.sessions import SessionsManager
 # Create your views here.
 sess=SessionsManager()
 con=Connector()
 cat=Category()
+tag=Tag()
 vid=Video()
 
 def index(req):
@@ -36,17 +38,23 @@ def upload(req):
                 'title': req.POST['title'].strip(),
                 'descr':req.POST['descr'].strip(),
                 'url': req.POST['url'].strip(),
+                'tags': req.POST['tags'].strip(),
                 'user_id': uid[0]['user_id'],
                 'vidcatlist':req.POST.getlist('box')
             }
+
+
             vid.insert(data)
-            id=vid.get_vid_id(data)
-            print(id)
+            res=vid.get_vid_id(data)
+            video_id = res[0]['video_id']
+            print(video_id)
             for catid in data['vidcatlist']:
                 con.modify("""
                     INSERT INTO Vid_Cat(video_id,cat_id)
                     VALUES(%s,%s);
-                """,id[0]['video_id'],int(catid))
+                """,video_id,int(catid))
+
+            tag.insertTags(data['tags'],video_id)
             return render(req,'Frontend/upload.html',{'category':catlist,'msg':"Uploaded Sucessfully"})
     else:
         return redirect('auth:signin')

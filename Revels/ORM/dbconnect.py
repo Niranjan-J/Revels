@@ -51,3 +51,14 @@ class Connector():
                     return e
         finally:
             pass
+
+    def callProc(self,procName,*args):
+        try:
+            with connection.cursor() as cursor:
+                try:
+                    res = cursor.callproc(procName,args)
+                    return res;
+                except Exception as e:
+                    return e 
+        except Exception as e:
+            pass
