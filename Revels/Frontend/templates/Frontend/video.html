@@ -11,9 +11,19 @@ src="{{ video.url }}">
 </iframe>
 <h4>{{ vid.username }}</h4>
 
+<form class="" action="{% url 'likes' video.video_id %}" method="post">
+  {% csrf_token %}
+  {% if liked == False %}
+    <input type="submit" name="like" value="like">
+  {% else %}
+    <input type="submit" name="unlike" value="unlike">
+  {% endif %}
+
+</form>
+
 <h3>comments</h3>
 
-<form class="" action="{% url 'viewVideo' video.video_id %}" method="post">
+<form class="" action="{% url 'create_comment' video.video_id %}" method="post">
   {% csrf_token %}
   <label for="comment"></label>
   <input type="text" name="comment" value="">

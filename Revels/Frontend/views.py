@@ -126,29 +126,50 @@ def createPlaylist(req,chid):
 
 def viewVideo(req,video_id):
 
-        vid = con.query("SELECT * FROM Video NATURAL JOIN User_Profile WHERE video_id=%s",int(video_id))
-        comm = con.query("SELECT * FROM  User_Profile NATURAL JOIN Comment where Comment.video_id = %s", vid[0]['video_id'])
+        video = con.query("SELECT * FROM Video NATURAL JOIN User_Profile WHERE video_id=%s",int(video_id))
+        comm = con.query("SELECT * FROM  User_Profile NATURAL JOIN Comment where Comment.video_id = %s", video[0]['video_id'])
 
         if req.method=='GET':
 
+            var = {
+                'video' : video[0],
+                'comments' : comm,
+                'liked' : vid.get_like(video[0]['video_id'])
+            }
+            return render(req,'Frontend/video.html',var)
+
+def createComment(req,video_id):
+    if req.method=='POST':
+        vid = con.query("SELECT * FROM Video NATURAL JOIN User_Profile WHERE video_id=%s",int(video_id))
+        uid=sess.checkSession(req)
+        if uid!=None:
+            comm = req.POST['comment'].strip()
+            con.modify("""
+                INSERT INTO Comment(text, timestamp, video_id, user_id) VALUES (%s,CURRENT_TIMESTAMP(),%s,%s)
+            """, comm, vid[0]['video_id'],uid[0]['user_id'])
+            comm = con.query("SELECT * FROM  User_Profile NATURAL JOIN Comment where Comment.video_id = %s", vid[0]['video_id'])
             var = {
                 'video' : vid[0],
                 'comments' : comm,
             }
             return render(req,'Frontend/video.html',var)
-        elif req.method=='POST':
+        else:
+            return redirect('auth:signin')
 
-            uid=sess.checkSession(req)
-            if uid!=None:
-                comm = req.POST['comment'].strip()
+def likes(req,video_id):
+    uid=sess.checkSession(req)
+    if uid!=None :
+        if req.method=='GET':
+            pass
+        elif req.method=='POST':
+            if 'like' in req.POST :
                 con.modify("""
-                    INSERT INTO Comment(text, timestamp, video_id, user_id) VALUES (%s,CURRENT_TIMESTAMP(),%s,%s)
-                """, comm, vid[0]['video_id'],uid[0]['user_id'])
-                comm = con.query("SELECT * FROM  User_Profile NATURAL JOIN Comment where Comment.video_id = %s", vid[0]['video_id'])
-                var = {
-                    'video' : vid[0],
-                    'comments' : comm,
-                }
-                return render(req,'Frontend/video.html',var)
-            else:
-                return redirect('auth:signin')
+                    INSERT INTO `Like`(video_id,user_id) VALUES (%s,%s)
+                """,int(video_id),int(uid[0]['user_id']))
+            elif 'unlike' in req.POST :
+                con.modify("""
+                    DELETE FROM `Like` WHERE user_id = %s
+                """,int(uid[0]['user_id']))
+            return redirect('viewVideo',video_id)
+    else :
+        return redirect('auth:signin')
