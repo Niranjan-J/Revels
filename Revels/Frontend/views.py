@@ -102,7 +102,6 @@ def getChannel(req,chname):
             WHERE Channel.channel_id=Playlist.channel_id AND
             Channel.name=%s AND Channel.user_id=%s;
         """,chname,uid[0]['user_id'])
-        plvideo=[]
         for item in data:
             item['videos']=con.query("SELECT Video.* FROM Video NATURAL JOIN Pl_Vid WHERE playlist_id=%s",item['playlist_id'])
         return render(req,'Frontend/mychannel.html',{'data':data })
@@ -171,5 +170,43 @@ def likes(req,video_id):
                     DELETE FROM `Like` WHERE user_id = %s
                 """,int(uid[0]['user_id']))
             return redirect('viewVideo',video_id)
+    else :
+        return redirect('auth:signin')
+
+def addtoplaylist(req,vid):
+    uid=sess.checkSession(req)
+    if uid!=None :
+        if req.method=='GET':
+            data=con.query("""
+                SELECT playlist_id,Playlist.name AS plname FROM Playlist,Channel
+                WHERE Playlist.channel_id=Channel.channel_id AND user_id=%s;            
+            """,uid[0]['user_id'])
+            return render(req,'Frontend/addtoplaylist.html',{'data':data,'vid':vid})
+        elif req.method=='POST':
+            plids=req.POST.getlist('box')
+            for item in plids:
+                con.modify("""
+                    INSERT INTO Pl_Vid
+                    VALUES(%s,%s);
+                """,vid,int(item))
+            return redirect('viewVideo',vid)
+    else :
+        return redirect('auth:signin')
+
+def removeVidPl(req,plid):
+    uid=sess.checkSession(req)
+    if uid!=None :
+        if req.method=='POST':
+            videos=req.POST.getlist('box')
+            for item in videos:
+                con.modify("""
+                    DELETE FROM Pl_Vid 
+                    WHERE video_id=%s AND playlist_id=%s;
+                """,int(item),plid)
+            ch=con.query("""
+                SELECT Channel.name FROM Playlist,Channel 
+                WHERE Channel.channel_id=Playlist.channel_id AND playlist_id=%s
+                """,plid)
+            return redirect('getChannel',ch[0]['name'])
     else :
         return redirect('auth:signin')

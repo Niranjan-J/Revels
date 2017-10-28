@@ -9,7 +9,11 @@
 <iframe width="420" height="315"
 src="{{ video.url }}">
 </iframe>
-<h4>{{ vid.username }}</h4>
+<br>
+By {{ video.username }} ...
+<br><br>
+
+<a href="{% url 'addtoplaylist' video.video_id %}"><button>Add To Playlist</button></a><br><br>
 
 <form class="" action="{% url 'likes' video.video_id %}" method="post">
   {% csrf_token %}
@@ -18,7 +22,6 @@ src="{{ video.url }}">
   {% else %}
     <input type="submit" name="unlike" value="unlike">
   {% endif %}
-
 </form>
 
 <h3>comments</h3>

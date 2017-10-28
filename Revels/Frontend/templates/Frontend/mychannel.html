@@ -7,18 +7,16 @@
 {% block body %}
     <h4>{{ data.0.description }}</h4>
     <ol>
-        
         {% for item in data %}
             <li>{{ item.plname }}</li>
-            <ul>
-                
+            <form action="{% url 'removeVidPl' item.playlist_id %}" method="post">
+                {% csrf_token %}
                 {% for video in item.videos %}
-                    <li>{{ video.title }}</li>
+                <input type="checkbox" name="box" value="{{ video.video_id }}">{{ video.title }}<br>
                 {% endfor %}
-                    
-            </ul>
+                <input type="submit" value="remove">
+            </form>
         {% endfor %}
-            
     </ol>
     <a href="{% url 'createPlaylist' data.0.channel_id %}"><button>+ New Playlist</button></a>
 {% endblock body %}
