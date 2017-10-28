@@ -21,7 +21,7 @@ class Relationships():
                 FOREIGN KEY(cat_id) REFERENCES Category(cat_id)
             );
             """)
-    
+
     def create_Subscription(self):
         self.con.create("""
             CREATE TABLE IF NOT EXISTS Subscription(
@@ -31,7 +31,7 @@ class Relationships():
                 FOREIGN KEY(channel_id) REFERENCES Channel(channel_id)
             );
             """)
-    
+
     def create_Like(self):
         self.con.create("""
             CREATE TABLE IF NOT EXISTS `Like`(
@@ -51,4 +51,4 @@ class Relationships():
                 FOREIGN KEY(video_id) REFERENCES Video(video_id),
                 FOREIGN KEY(playlist_id) REFERENCES Playlist(playlist_id)
             );
-            """)             
+            """)
