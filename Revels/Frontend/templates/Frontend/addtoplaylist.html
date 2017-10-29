@@ -1,16 +1,17 @@
 {% extends 'layouts/base.html' %}
-
 {% block title %}
     Add To Playlist...
 {% endblock title %}
-
 {% block body %}
     <form action="{% url 'addtoplaylist' vid %}" method="post">
         {% csrf_token %}
         {% for item in data %}
-            <input type="checkbox" name="box" value="{{ item.playlist_id }}">{{ item.plname }}<br>
+            <h3>{{ item.chname }}</h3>
+            {% for pl in item.playlists %}
+                <input type="checkbox" name="box" value="{{ pl.playlist_id }}">{{ pl.plname }}<br>
+            {% endfor %}
         {% endfor %}
-        <input type="submit" value="Add">
+        <br></btr><input type="submit" value="Add">
     </form>
 {% endblock body %}
     

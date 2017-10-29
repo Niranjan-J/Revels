@@ -178,9 +178,14 @@ def addtoplaylist(req,vid):
     if uid!=None :
         if req.method=='GET':
             data=con.query("""
-                SELECT playlist_id,Playlist.name AS plname FROM Playlist,Channel
-                WHERE Playlist.channel_id=Channel.channel_id AND user_id=%s;            
+                SELECT channel_id,name AS chname FROM Channel
+                WHERE user_id=%s ORDER BY channel_id;            
             """,uid[0]['user_id'])
+            for item in data:
+                item['playlists']=con.query("""
+                    SELECT playlist_id,name AS plname FROM Playlist
+                    WHERE channel_id=%s;
+                """,item['channel_id'])
             return render(req,'Frontend/addtoplaylist.html',{'data':data,'vid':vid})
         elif req.method=='POST':
             plids=req.POST.getlist('box')
