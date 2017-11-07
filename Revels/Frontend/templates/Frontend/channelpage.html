@@ -22,7 +22,15 @@
             {% csrf_token %}
             <input type="submit" value="Delete Channel">
         </form>
+    {% else %}
+        <form action="{% url 'subscribe' ch.0.channel_id %}" method="post">
+            {% csrf_token %}
+            {% if subs == True %}
+                <input type="submit" name="subscribe" value="Unsubscribe">
+            {% else %}
+                <input type="submit" name="subscribe" value="Subscribe">
+            {% endif %}
+        </form>
     {% endif %}
-        
 {% endblock body %}
     

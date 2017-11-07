@@ -1,27 +1,45 @@
 {% extends 'layouts/base.html' %} 
-{% block title %} 
+{% block title %}
 {{user.username}}
 {% endblock title %}
 {% block body %}
-<h1>{{user.username}}</h1>
-<h2>{{user.firstname}}</h2>
-<h2>{{user.lastname}}</h2>
-<h2>{{user.gender}}</h2>
+<h3>{{user.username}}</h3>
+<h4>{{user.firstname}}</h4>
+<h4>{{user.lastname}}</h4>
+<h4>{{user.gender}}</h4>
 
-<h1>Channels</h1>
-{% for channel in channels %}
-<a href="{% url 'getChannel' channel.channel_id %}">
-  <h3>{{channel.name}}</h3>
-  <h6>{{channel.description}}</h6>
-</a>
-{% endfor %}
+<h3>Channels</h3>
+<ul>
+    {% for channel in channels %}
+       <li>
+            <a href="{% url 'getChannel' channel.channel_id %}"><h4>{{channel.name}}</h4></a>
+            <h5>{{channel.description}}</h5>
+       </li>
+    {% endfor %}
+</ul>
 
-<h1>Videos</h1>
-{% for video in videos %}
-<a href="{% url 'viewVideo' video.video_id %}"
-<h3>{{video.title}}</h3>
-<h6>{{video.descr}}</h6>
-</a>
-{% endfor %}
+<h3>Videos</h3>
+<ul>
+    {% for video in videos %}
+    <li>
+        <a href="{% url 'viewVideo' video.video_id %}">
+            <h4>{{video.title}}</h4>
+        </a>
+        {{video.descr}}
+    </li>
+    {% endfor %}
+</ul>
+
+{% if owner == True %}
+    <form action="{% url 'upload'%}" method="get">
+        {% csrf_token %}
+        <input type="submit" value="Upload Videos">
+    </form>
+    <form action="{% url 'createChannel'%}" method="get">
+        {% csrf_token %}
+        <input type="submit" value="+ New Channel">
+    </form>
+{% endif %}
+
 
 {% endblock body %}

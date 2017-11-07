@@ -6,7 +6,6 @@ urlpatterns=[
     url(r'^videos/(?P<video_id>[^/]+)/$',views.viewVideo,name="viewVideo"),
     url(r'^categories/(?P<catname>[^/]+)/$',views.catvideo,name="catvideo"),
     url(r'^upload/$',views.upload,name="upload"),
-    #url(r'^channels/$',views.showChannels,name='showChannels'),
     url(r'^channel/(?P<chid>[^/]+)/$',views.getChannel,name='getChannel'),
     url(r'^playlist/(?P<plid>[^/]+)/$',views.getPlaylist,name='getPlaylist'),
     url(r'^create_channel/$',views.createChannel, name='createChannel'),
@@ -20,4 +19,5 @@ urlpatterns=[
     url(r'^deletech/(?P<chid>[^/]+)/$',views.deleteChannel,name='deleteChannel'),
     url(r'^search/$',views.search,name="search"),
     url(r'^search/(?P<cat>[^/]+)/(?P<query>[^/]+)/$',views.searchResult,name="searchResult"),
+    url(r'^subscribe/(?P<chid>[^/]+)/$',views.subscribe,name='subscribe'),
 ]
