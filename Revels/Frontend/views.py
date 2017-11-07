@@ -215,3 +215,20 @@ def removeVidPl(req,plid):
             return redirect('getChannel',ch[0]['name'])
     else :
         return redirect('auth:signin')
+
+def getUserDetails(req,usr):
+    userdata = (con.query("""
+      SELECT * FROM User_Profile WHERE user_id = %s
+    """,usr))[0]
+    videosdata = (con.query("""
+      SELECT * FROM Video WHERE user_id = %s
+    """,usr))
+    channelsdata = (con.query("""
+      SELECT * FROM Channel  WHERE user_id = %s
+    """,usr))
+    print(videosdata)
+    return render(req,'Frontend/user.html',{
+        "user":userdata,
+        "channels":channelsdata,
+        "videos":videosdata,
+    })

@@ -13,5 +13,6 @@ urlpatterns=[
     url(r'^create_comment/(?P<video_id>[^/]+)/$',views.createComment,name="create_comment"),
     url(r'^likes/(?P<video_id>[^/]+)/$',views.likes,name="likes"),
     url(r'^addpl/(?P<vid>[^/]+)/$',views.addtoplaylist,name='addtoplaylist'),
-    url(r'^removepl/(?P<plid>[^/]+)/$',views.removeVidPl,name='removeVidPl')
+    url(r'^removepl/(?P<plid>[^/]+)/$',views.removeVidPl,name='removeVidPl'),
+    url(r'^users/(?P<usr>[^/]+)/$',views.getUserDetails,name='userProfile')
 ]
