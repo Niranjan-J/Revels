@@ -279,3 +279,47 @@ def getUserDetails(req,usr):
         "channels":channelsdata,
         "videos":videosdata,
     })
+
+def search(req) :
+    if req.method=='GET':
+        return render(req,'Frontend/search.html')
+    elif req.method=='POST':
+        qr = req.POST['query'].strip()
+        cat = req.POST['cat'].strip()
+
+        if cat == "Channels" :
+            res = con.query("""
+            SELECT * FROM Channel WHERE Channel.name LIKE %s OR Channel.description LIKE %s;
+            """,("%"+qr+"%"),("%"+qr+"%"))
+        
+        if cat == "Categories" :
+            res = con.query("""
+            SELECT * FROM Category WHERE Category.text LIKE %s;
+            """,("%"+qr+"%"))
+        
+        if cat == "Playlists" :
+            res = con.query("""
+            SELECT * FROM Playlist WHERE Playlist.name LIKE %s;
+            """,("%"+qr+"%"))
+        
+        if cat == "Videos" :
+            res = con.query("""
+            SELECT * FROM Video WHERE Video.title LIKE %s OR Video.descr LIKE %s;
+            """,("%"+qr+"%"),("%"+qr+"%"))
+        
+        if cat == "Users" :
+            res = con.query("""
+            SELECT * FROM User_Profile WHERE 
+                User_Profile.firstname LIKE %s OR 
+                User_Profile.lastname LIKE %s OR
+                User_Profile.username LIKE %s;
+            """,("%"+qr+"%"),("%"+qr+"%"),("%"+qr+"%"))
+        
+
+        return render(req,'Frontend/search.html',{
+            "result":res,
+            "cat":cat
+            })
+
+def searchResult(req,cat,query) :
+    pass

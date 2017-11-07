@@ -34,9 +34,8 @@ class Video():
                        DELETE FROM Vid_Cat WHERE OLD.video_id = video_id;
                        DELETE FROM Pl_Vid WHERE OLD.video_id = video_id;
                        DELETE FROM Comment WHERE OLD.video_id = video_id;
-                       DELETE FROM Like WHERE OLD.video_id = video_id;
+                       DELETE FROM `Like` WHERE OLD.video_id = video_id;
                      END//
-
         """)
 
     def insert(self,data):

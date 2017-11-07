@@ -18,4 +18,6 @@ urlpatterns=[
     url(r'^removepl/(?P<plid>[^/]+)/(?P<vid>[^/]+)/$',views.removeVidPl,name='removeVidPl'),
     url(r'^deletepl/(?P<plid>[^/]+)/$',views.deletePlaylist,name='deletePlaylist'),
     url(r'^deletech/(?P<chid>[^/]+)/$',views.deleteChannel,name='deleteChannel'),
+    url(r'^search/$',views.search,name="search"),
+    url(r'^search/(?P<cat>[^/]+)/(?P<query>[^/]+)/$',views.searchResult,name="searchResult"),
 ]
