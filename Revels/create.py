@@ -16,31 +16,40 @@ if __name__=="__main__":
 
     cat=Category()
     cat.createTable()
+    cat.createTriggers()
 
     user=User()
     user.createTable()
+    user.createTriggers()
 
     vid=Video()
     vid.createTable()
+    vid.createTriggers()
 
     ch=Channel()
     ch.createTable()
+    ch.createTriggers()
 
     tg=Tag()
     tg.createTable()
+    tg.createTriggers()
     tg.create_Procs()
 
     pl=Playlist()
     pl.createTable()
+    pl.createTriggers()
 
     com=Comment()
     com.createTable()
+    com.createTriggers()
 
     prof=Profile()
     prof.createTable()
+    prof.createTriggers()
 
     sess=SessionsManager()
     sess.createTable()
+    sess.createTriggers()
 
     rel = Relationships()
     rel.create_UsersProfile()

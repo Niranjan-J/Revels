@@ -14,6 +14,9 @@ class Tag():
             );
         """)
 
+    def createTriggers(self):
+        pass
+
     def create_Procs(self):
         self.con.create("""
             CREATE PROCEDURE insertTag( IN tag VARCHAR(100), IN video_id INT )

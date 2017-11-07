@@ -20,6 +20,24 @@ class Video():
             );
             """)
 
+    def createTriggers(self):
+      self.con.create(""" 
+              Drop TRIGGER IF EXISTS videoDeleteTrigger;
+
+              DELIMITER //
+              CREATE TRIGGER videoDeleteTrigger
+              BEFORE DELETE ON Video
+                     FOR EACH ROW
+
+                     BEGIN
+                       DELETE FROM Tag WHERE OLD.video_id = video_id;
+                       DELETE FROM Vid_Cat WHERE OLD.video_id = video_id;
+                       DELETE FROM Pl_Vid WHERE OLD.video_id = video_id;
+                       DELETE FROM Comment WHERE OLD.video_id = video_id;
+                       DELETE FROM Like WHERE OLD.video_id = video_id;
+                     END//
+
+        """)
 
     def insert(self,data):
         self.con.modify("""
@@ -49,3 +67,5 @@ class Video():
             return True
         else :
             return False
+
+

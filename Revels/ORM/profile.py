@@ -18,6 +18,9 @@ class Profile():
             );
             """)
 
+    def createTriggers(self):
+        pass
+
     def getAllVideosOfUser(self, user_id) :
         return self.con.query("""
             SELECT * FROM Video WHERE user_id = %d;

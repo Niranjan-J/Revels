@@ -4,6 +4,9 @@ class Comment():
     def __init__(self):
         self.con=Connector()
 
+    def createTriggers(self):
+        pass
+
     def createTable(self):
         self.con.query("""
             CREATE TABLE IF NOT EXISTS Comment(

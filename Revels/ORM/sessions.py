@@ -18,6 +18,9 @@ class SessionsManager():
             );
             """)
 
+    def createTriggers(self):
+        pass
+
     # Inserts Session data into the sessions table and returns an unique session id
     def insertSession(self,data,user):
         s_id = str(os.urandom(16))

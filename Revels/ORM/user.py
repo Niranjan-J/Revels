@@ -21,6 +21,9 @@ class User():
             );
             """)
 
+    def createTriggers(self):
+        pass
+
     # returns user_id for a user data
     def getUserId(self,data):
         res = self.con.query("""

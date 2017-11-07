@@ -14,6 +14,9 @@ class Category():
             );
         """)
 
+    def createTriggers(self):
+        pass
+
     def insert(self, data):
         self.con.modify("""
             INSERT INTO Category(text)
