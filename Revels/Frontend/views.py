@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from django.http import HttpResponse
 from django.shortcuts import render,redirect
 from ORM.dbconnect import Connector
 from ORM.video import Video
@@ -94,19 +95,38 @@ def createChannel(req):
     else:
         return redirect('auth:signin')
 
-def getChannel(req,chname):
+def getChannel(req,chid):
+    showdel=False
     uid=sess.checkSession(req)
-    if uid!=None:
-        data=con.query("""
-            SELECT Playlist.playlist_id,Playlist.name AS plname,Channel.* FROM Channel,Playlist
-            WHERE Channel.channel_id=Playlist.channel_id AND
-            Channel.name=%s AND Channel.user_id=%s;
-        """,chname,uid[0]['user_id'])
-        for item in data:
-            item['videos']=con.query("SELECT Video.* FROM Video NATURAL JOIN Pl_Vid WHERE playlist_id=%s",item['playlist_id'])
-        return render(req,'Frontend/mychannel.html',{'data':data })
+    pllist=con.query("""SELECT * FROM Playlist WHERE channel_id=%s;""",chid)
+    ch=con.query("""SELECT * FROM Channel WHERE channel_id=%s;""",chid)
+    if len(ch)!=0:
+        if ch[0]['user_id']==uid[0]['user_id']:
+            showdel=True
+        return render(req,'Frontend/channelpage.html',{'pllist':pllist,'ch':ch,'showdel':showdel})
     else:
-        return redirect('auth:signin')
+        return HttpResponse("<h4>Page not found.</h4>")
+
+def getPlaylist(req,plid):
+    showdel=False
+    uid=sess.checkSession(req)
+    pl=con.query("""SELECT Playlist.*,Channel.user_id 
+        FROM Playlist,Channel 
+        WHERE Playlist.channel_id=Channel.channel_id AND playlist_id=%s;""",plid)
+    vidlist=con.query("""SELECT Video.video_id,Video.title 
+            FROM Playlist NATURAL JOIN Pl_Vid NATURAL JOIN Video
+            WHERE Playlist.playlist_id=%s;""",plid) 
+    if len(pl)!=0:
+        if uid!=None:
+            if pl[0]['user_id']==uid[0]['user_id']:
+                showdel=True
+        if len(vidlist)==0:
+            return render(req,'Frontend/playlistpage.html',{'msg':"No Videos",'pl':pl,'showdel':showdel})
+        else:
+            return render(req,'Frontend/playlistpage.html',{'vidlist':vidlist,'pl':pl,'showdel':showdel})
+    else:
+        return HttpResponse("<h4>Page not found.</h4>")
+
 
 def createPlaylist(req,chid):
     uid=sess.checkSession(req)
@@ -124,18 +144,15 @@ def createPlaylist(req,chid):
         return redirect('auth:signin')
 
 def viewVideo(req,video_id):
-
-        video = con.query("SELECT * FROM Video NATURAL JOIN User_Profile WHERE video_id=%s",int(video_id))
-        comm = con.query("SELECT * FROM  User_Profile NATURAL JOIN Comment where Comment.video_id = %s", video[0]['video_id'])
-
-        if req.method=='GET':
-
-            var = {
-                'video' : video[0],
-                'comments' : comm,
-                'liked' : vid.get_like(video[0]['video_id'])
-            }
-            return render(req,'Frontend/video.html',var)
+    video = con.query("SELECT * FROM Video NATURAL JOIN User_Profile WHERE video_id=%s",int(video_id))
+    comm = con.query("SELECT * FROM  User_Profile NATURAL JOIN Comment where Comment.video_id = %s", video[0]['video_id'])
+    if req.method=='GET':
+        var = {
+            'video' : video[0],
+            'comments' : comm,
+            'liked' : vid.get_like(video[0]['video_id'])
+        }
+        return render(req,'Frontend/video.html',var)
 
 def createComment(req,video_id):
     if req.method=='POST':
@@ -198,21 +215,46 @@ def addtoplaylist(req,vid):
     else :
         return redirect('auth:signin')
 
-def removeVidPl(req,plid):
+def removeVidPl(req,plid,vid):
     uid=sess.checkSession(req)
-    if uid!=None :
-        if req.method=='POST':
-            videos=req.POST.getlist('box')
-            for item in videos:
-                con.modify("""
-                    DELETE FROM Pl_Vid 
-                    WHERE video_id=%s AND playlist_id=%s;
-                """,int(item),plid)
-            ch=con.query("""
-                SELECT Channel.name FROM Playlist,Channel 
-                WHERE Channel.channel_id=Playlist.channel_id AND playlist_id=%s
+    pluser=con.query("""SELECT user_id FROM Playlist,Channel 
+            WHERE Playlist.channel_id=Channel.channel_id 
+            AND playlist_id=%s;""",plid)
+    if uid!=None:
+        if uid[0]['user_id']==pluser[0]['user_id']:
+            con.modify("""DELETE FROM Pl_Vid 
+                WHERE video_id=%s AND playlist_id=%s;
+                """,vid,plid)
+        return redirect('getPlaylist',plid)
+    else :
+        return redirect('auth:signin')
+
+def deletePlaylist(req,plid):
+    uid=sess.checkSession(req)
+    pluser=con.query("""SELECT user_id FROM Playlist,Channel 
+            WHERE Playlist.channel_id=Channel.channel_id 
+            AND playlist_id=%s;""",plid)
+    if uid!=None:
+        if uid[0]['user_id']==pluser[0]['user_id']:
+            con.modify("""DELETE FROM Playlist
+                WHERE playlist_id=%s;
                 """,plid)
-            return redirect('getChannel',ch[0]['name'])
+        return redirect('userProfile',uid[0]['user_id'])
+    else :
+        return redirect('auth:signin')
+
+def deleteChannel(req,chid):
+    uid=sess.checkSession(req)
+    ch=con.query("""SELECT * FROM Channel 
+            WHERE channel_id=%s;""",chid)
+    if uid!=None:
+        if uid[0]['user_id']==ch[0]['user_id']:
+            con.modify("""DELETE FROM Channel
+                WHERE channel_id=%s;
+                """,chid)
+            return redirect('userProfile',uid[0]['user_id'])
+        else:
+            return redirect('getChannel',chid)
     else :
         return redirect('auth:signin')
 

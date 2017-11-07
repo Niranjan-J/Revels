@@ -5,8 +5,7 @@
 {% endblock title %}
 
 {% block body %}
-    <ol>
-        
+    <ol>    
         {% for item in data %}
             <li>
                 {{ item.title }}<br>
@@ -14,8 +13,7 @@
                 src="{{ item.url }}">
                 </iframe>
             </li>
-        {% endfor %}
-            
+        {% endfor %}    
     </ol>
 {% endblock body %}
     

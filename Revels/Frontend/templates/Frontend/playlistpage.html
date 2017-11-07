@@ -1,0 +1,31 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}
+    {{ pl.0.name }}
+{% endblock title %}
+
+{% block body %}
+    <h4>{{ pl.0.name }}</h4>
+    {{ msg }}
+    <ol>
+        {% for item in vidlist %}
+            <li>
+                <a href="{% url 'viewVideo' item.video_id %}">{{ item.title }}</a>
+                
+                {% if showdel == True %}
+                    <form action="{% url 'removeVidPl' plid=pl.0.playlist_id vid=item.video_id %}" method="post">
+                        {% csrf_token %}
+                        <input type="submit" value="Remove">
+                    </form>
+                {% endif %}
+                    
+            </li>
+        {% endfor %}
+    </ol>
+    {% if showdel == True %}
+        <form action="{% url 'deletePlaylist' pl.0.playlist_id %}" method="post">
+            {% csrf_token %}
+            <input type="submit" value="Delete Playlist">
+        </form>
+    {% endif %}
+{% endblock body %}

@@ -15,6 +15,6 @@
         <input type="submit" name="submit" value="Create"><br>    
     </form><br>
     {{ msg }}<br>
-    <a href="{% url 'getChannel' ch.0.name %}">Go To Your Channel...</a>
+    <a href="{% url 'getChannel' ch.0.channel_id %}">Go To Your Channel...</a>
 {% endblock body %}
     

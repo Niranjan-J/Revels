@@ -1,0 +1,28 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}
+    {{ ch.0.name }}
+{% endblock title %}
+
+{% block body %}
+    <h2>{{ ch.0.name }}</h2>
+    <h4>{{ ch.0.description }}</h4>
+    <ol>
+        {% for pl in pllist %}
+            <li><a href="{% url 'getPlaylist' pl.playlist_id %}">{{ pl.name }}</a></li>
+        {% endfor %}        
+    </ol>        
+    
+    {% if showdel == True %}
+        <form action="{% url 'createPlaylist' ch.0.channel_id %}" method="get">
+            {% csrf_token %}
+            <input type="submit" value="Create Playlist">
+        </form>
+        <form action="{% url 'deleteChannel' ch.0.channel_id %}" method="post">
+            {% csrf_token %}
+            <input type="submit" value="Delete Channel">
+        </form>
+    {% endif %}
+        
+{% endblock body %}
+    
