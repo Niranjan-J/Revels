@@ -1,0 +1,72 @@
+{% extends 'layouts/base.html' %} 
+{% block title %} 
+search
+{% endblock title %}
+{% block body %}
+<form method="POST" action="{% url 'search' %}">
+    {% csrf_token %}
+    <input name="query" type="text" value=""/>
+    <select name="cat">
+        <option value="Categories">Categories</option>
+        <option value="Channels">Channels</option>
+        <option value="Playlists">Playlists</option>
+        <option value="Videos">Videos</option>
+        <option value="Users">Users</option>
+    </select>
+    <input name="" type="submit" value=""/>
+</form>
+
+{% if result %}
+
+    {% if cat == "Categories" %}
+        <h1>Categories</h1>
+        {% for res in result %}
+        <a href="{% url 'catvideo' res.cat_id %}">
+            <h3>{{res.text}}</h3>
+        </a>
+        {% endfor %}
+    {% endif %}
+
+    {% if cat == "Channels" %}
+        <h1>Channels</h1>
+        {% for res in result %}
+        <a href="{% url 'getChannel' res.channel_id %}">
+            <h3>{{res.name}}</h3>
+            <h6>{{res.description}}</h6>
+        </a>
+        {% endfor %}
+    {% endif %}
+
+    {% if cat == "Playlists" %}
+        <h1>Playlists</h1>
+        {% for res in result %}
+        <a href="{% url 'getPlaylist' res.playlist_id %}">
+            <h3>{{res.name}}</h3>
+        </a>
+        {% endfor %}
+    {% endif %}
+
+    {% if cat == "Videos" %}
+        <h1>Videos</h1>
+        {% for res in result %}
+        <a href="{% url 'viewVideo' res.video_id %}">
+            <h3>{{res.title}}</h3>
+            <h6>{{res.descr}}</h6>
+        </a>
+        {% endfor %}
+    {% endif %}
+
+    {% if cat == "Users" %}
+        <h1>Users</h1>
+        {% for res in result %}
+        <a href="{% url 'userProfile' res.user_id %}">
+            <h3>{{res.username}}</h3>
+            <h6>{{res.firstname}}</h6>
+            <h6>{{res.lastname}}</h6>
+        </a>
+        {% endfor %}
+    {% endif %}
+
+{% endif %}
+
+{% endblock body %}

@@ -1,5 +1,5 @@
 {% extends 'layouts/base.html' %} 
-{% block title %} 
+{% block title %}
 {{user.username}}
 {% endblock title %}
 {% block body %}
@@ -15,7 +15,7 @@
             <a href="{% url 'getChannel' channel.channel_id %}"><h4>{{channel.name}}</h4></a>
             <h5>{{channel.description}}</h5>
        </li>
-    {% endfor %}    
+    {% endfor %}
 </ul>
 
 <h3>Videos</h3>
@@ -40,6 +40,6 @@
         <input type="submit" value="+ New Channel">
     </form>
 {% endif %}
-    
+
 
 {% endblock body %}

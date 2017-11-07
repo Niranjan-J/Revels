@@ -84,9 +84,13 @@ def createChannel(req):
 
 def getChannel(req,chid):
     showdel=False
-    uid=sess.checkSession(req)
-    pllist=con.query("""SELECT * FROM Playlist WHERE channel_id=%s;""",chid)
-    ch=con.query("""SELECT * FROM Channel WHERE channel_id=%s;""",chid)
+    user=sess.checkSession(req)
+    uid = -1
+    if user != None :
+        uid = user[0]['user_id']
+    pllist=con.query("""SELECT * FROM Playlist WHERE channel_id=%s;""",int(chid))
+    ch=con.query("""SELECT * FROM Channel WHERE channel_id=%s;""",int(chid))
+    print(ch)
     if len(ch)!=0:
         if uid!=None:
             if ch[0]['user_id']==uid[0]['user_id']:
@@ -103,12 +107,12 @@ def getChannel(req,chid):
 def getPlaylist(req,plid):
     showdel=False
     uid=sess.checkSession(req)
-    pl=con.query("""SELECT Playlist.*,Channel.user_id 
-        FROM Playlist,Channel 
+    pl=con.query("""SELECT Playlist.*,Channel.user_id
+        FROM Playlist,Channel
         WHERE Playlist.channel_id=Channel.channel_id AND playlist_id=%s;""",plid)
-    vidlist=con.query("""SELECT Video.video_id,Video.title 
+    vidlist=con.query("""SELECT Video.video_id,Video.title
             FROM Playlist NATURAL JOIN Pl_Vid NATURAL JOIN Video
-            WHERE Playlist.playlist_id=%s;""",plid) 
+            WHERE Playlist.playlist_id=%s;""",plid)
     if len(pl)!=0:
         if uid!=None:
             if pl[0]['user_id']==uid[0]['user_id']:
@@ -188,7 +192,7 @@ def addtoplaylist(req,vid):
         if req.method=='GET':
             data=con.query("""
                 SELECT channel_id,name AS chname FROM Channel
-                WHERE user_id=%s ORDER BY channel_id;            
+                WHERE user_id=%s ORDER BY channel_id;
             """,uid[0]['user_id'])
             for item in data:
                 item['playlists']=con.query("""
@@ -209,12 +213,12 @@ def addtoplaylist(req,vid):
 
 def removeVidPl(req,plid,vid):
     uid=sess.checkSession(req)
-    pluser=con.query("""SELECT user_id FROM Playlist,Channel 
-            WHERE Playlist.channel_id=Channel.channel_id 
+    pluser=con.query("""SELECT user_id FROM Playlist,Channel
+            WHERE Playlist.channel_id=Channel.channel_id
             AND playlist_id=%s;""",plid)
     if uid!=None:
         if uid[0]['user_id']==pluser[0]['user_id']:
-            con.modify("""DELETE FROM Pl_Vid 
+            con.modify("""DELETE FROM Pl_Vid
                 WHERE video_id=%s AND playlist_id=%s;
                 """,vid,plid)
         return redirect('getPlaylist',plid)
@@ -223,8 +227,8 @@ def removeVidPl(req,plid,vid):
 
 def deletePlaylist(req,plid):
     uid=sess.checkSession(req)
-    pluser=con.query("""SELECT Channel.channel_id,user_id FROM Playlist,Channel 
-            WHERE Playlist.channel_id=Channel.channel_id 
+    pluser=con.query("""SELECT Channel.channel_id,user_id FROM Playlist,Channel
+            WHERE Playlist.channel_id=Channel.channel_id
             AND playlist_id=%s;""",plid)
     chid=pluser[0]['channel_id']
     if uid!=None:
@@ -238,7 +242,7 @@ def deletePlaylist(req,plid):
 
 def deleteChannel(req,chid):
     uid=sess.checkSession(req)
-    ch=con.query("""SELECT * FROM Channel 
+    ch=con.query("""SELECT * FROM Channel
             WHERE channel_id=%s;""",chid)
     if uid!=None:
         if uid[0]['user_id']==ch[0]['user_id']:
@@ -273,6 +277,49 @@ def getUserDetails(req,usr):
         'owner':owner,
     })
 
+def search(req) :
+    if req.method=='GET':
+        return render(req,'Frontend/search.html')
+    elif req.method=='POST':
+        qr = req.POST['query'].strip()
+        cat = req.POST['cat'].strip()
+
+        if cat == "Channels" :
+            res = con.query("""
+            SELECT * FROM Channel WHERE Channel.name LIKE %s OR Channel.description LIKE %s;
+            """,("%"+qr+"%"),("%"+qr+"%"))
+
+        if cat == "Categories" :
+            res = con.query("""
+            SELECT * FROM Category WHERE Category.text LIKE %s;
+            """,("%"+qr+"%"))
+
+        if cat == "Playlists" :
+            res = con.query("""
+            SELECT * FROM Playlist WHERE Playlist.name LIKE %s;
+            """,("%"+qr+"%"))
+
+        if cat == "Videos" :
+            res = con.query("""
+            SELECT * FROM Video WHERE Video.title LIKE %s OR Video.descr LIKE %s;
+            """,("%"+qr+"%"),("%"+qr+"%"))
+
+        if cat == "Users" :
+            res = con.query("""
+            SELECT * FROM User_Profile WHERE
+                User_Profile.firstname LIKE %s OR
+                User_Profile.lastname LIKE %s OR
+                User_Profile.username LIKE %s;
+            """,("%"+qr+"%"),("%"+qr+"%"),("%"+qr+"%"))
+
+
+        return render(req,'Frontend/search.html',{
+            "result":res,
+            "cat":cat
+            })
+
+def searchResult(req,cat,query) :
+    pass
 def subscribe(req,chid):
     uid=sess.checkSession(req)
     if uid!=None:
