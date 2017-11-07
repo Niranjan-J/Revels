@@ -14,7 +14,7 @@ from ORM.profile import Profile
 from ORM.tag import Tag
 from ORM.relations import Relationships
 from ORM.sessions import SessionsManager
-# Create your views here.
+
 sess=SessionsManager()
 con=Connector()
 cat=Category()
@@ -43,8 +43,6 @@ def upload(req):
                 'user_id': uid[0]['user_id'],
                 'vidcatlist':req.POST.getlist('box')
             }
-
-
             vid.insert(data)
             res=vid.get_vid_id(data)
             video_id = res[0]['video_id']
@@ -60,22 +58,11 @@ def upload(req):
     else:
         return redirect('auth:signin')
 
-def showChannels(req):
-    uid=sess.checkSession(req)
-    if uid!=None:
-        chlist=con.query("SELECT name FROM Channel WHERE user_id=%s",uid[0]['user_id'])
-        if len(chlist)==0:
-            return render(req,'Frontend/channels.html',{'msg': "You don\'t have any Channels..."})
-        else:
-            return render(req,'Frontend/channels.html',{'msg':"Your Channels:",'chlist': chlist})
-    else:
-        return redirect('auth:signin')
-
 def createChannel(req):
     uid=sess.checkSession(req)
     if uid!=None:
         if req.method=='GET':
-            return render(req,'Frontend/createchannel.html',{})
+            return render(req,'Frontend/createchannel.html',{'id': uid[0]['user_id']})
         elif req.method=='POST':
             data={
                 'name': req.POST['name'].strip(),
@@ -91,7 +78,7 @@ def createChannel(req):
                 INSERT INTO Playlist(name,channel_id)
                 VALUES(%s,%s);
             """,data['defpl'],chid)
-            return render(req,'Frontend/createchannel.html',{'msg':"Channel Successfully created !!"})
+            return render(req,'Frontend/createchannel.html',{'id': uid[0]['user_id'],'msg':"Channel Successfully created !!"})
     else:
         return redirect('auth:signin')
 
@@ -101,9 +88,15 @@ def getChannel(req,chid):
     pllist=con.query("""SELECT * FROM Playlist WHERE channel_id=%s;""",chid)
     ch=con.query("""SELECT * FROM Channel WHERE channel_id=%s;""",chid)
     if len(ch)!=0:
-        if ch[0]['user_id']==uid[0]['user_id']:
-            showdel=True
-        return render(req,'Frontend/channelpage.html',{'pllist':pllist,'ch':ch,'showdel':showdel})
+        if uid!=None:
+            if ch[0]['user_id']==uid[0]['user_id']:
+                showdel=True
+            sublist=con.query("""SELECT * FROM Subscription WHERE user_id=%s AND channel_id=%s;""",uid[0]['user_id'],chid)
+            if len(sublist)==1:
+                subs=True
+            else:
+                subs=False
+        return render(req,'Frontend/channelpage.html',{'pllist':pllist,'ch':ch,'showdel':showdel,'subs':subs})
     else:
         return HttpResponse("<h4>Page not found.</h4>")
 
@@ -126,7 +119,6 @@ def getPlaylist(req,plid):
             return render(req,'Frontend/playlistpage.html',{'vidlist':vidlist,'pl':pl,'showdel':showdel})
     else:
         return HttpResponse("<h4>Page not found.</h4>")
-
 
 def createPlaylist(req,chid):
     uid=sess.checkSession(req)
@@ -231,15 +223,16 @@ def removeVidPl(req,plid,vid):
 
 def deletePlaylist(req,plid):
     uid=sess.checkSession(req)
-    pluser=con.query("""SELECT user_id FROM Playlist,Channel 
+    pluser=con.query("""SELECT Channel.channel_id,user_id FROM Playlist,Channel 
             WHERE Playlist.channel_id=Channel.channel_id 
             AND playlist_id=%s;""",plid)
+    chid=pluser[0]['channel_id']
     if uid!=None:
         if uid[0]['user_id']==pluser[0]['user_id']:
             con.modify("""DELETE FROM Playlist
                 WHERE playlist_id=%s;
                 """,plid)
-        return redirect('userProfile',uid[0]['user_id'])
+        return redirect('getChannel',chid)
     else :
         return redirect('auth:signin')
 
@@ -254,11 +247,16 @@ def deleteChannel(req,chid):
                 """,chid)
             return redirect('userProfile',uid[0]['user_id'])
         else:
-            return redirect('getChannel',chid)
+            return redirect('userProfile',uid[0]['user_id'])
     else :
         return redirect('auth:signin')
 
 def getUserDetails(req,usr):
+    uid=sess.checkSession(req)
+    owner=False
+    if uid!=None:
+        if int(usr)==uid[0]['user_id']:
+            owner=True
     userdata = (con.query("""
       SELECT * FROM User_Profile WHERE user_id = %s
     """,usr))[0]
@@ -268,9 +266,26 @@ def getUserDetails(req,usr):
     channelsdata = (con.query("""
       SELECT * FROM Channel  WHERE user_id = %s
     """,usr))
-    print(videosdata)
     return render(req,'Frontend/user.html',{
         "user":userdata,
         "channels":channelsdata,
         "videos":videosdata,
+        'owner':owner,
     })
+
+def subscribe(req,chid):
+    uid=sess.checkSession(req)
+    if uid!=None:
+        if req.POST['subscribe']=="Subscribe":
+            con.modify("""
+                INSERT INTO Subscription
+                VALUES(%s,%s);
+            """,uid[0]['user_id'],chid)
+        elif req.POST['subscribe']=="Unsubscribe":
+            con.modify("""
+                DELETE FROM Subscription
+                WHERE channel_id=%s AND user_id=%s;
+            """,chid,uid[0]['user_id'])
+        return redirect('getChannel',chid)
+    else:
+        return redirect('auth:signin')
