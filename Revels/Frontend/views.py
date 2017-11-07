@@ -97,11 +97,16 @@ def createChannel(req):
 
 def getChannel(req,chid):
     showdel=False
-    uid=sess.checkSession(req)
-    pllist=con.query("""SELECT * FROM Playlist WHERE channel_id=%s;""",chid)
-    ch=con.query("""SELECT * FROM Channel WHERE channel_id=%s;""",chid)
+    user=sess.checkSession(req)
+    uid = -1
+    if user != None :
+        uid = user[0]['user_id']
+    pllist=con.query("""SELECT * FROM Playlist WHERE channel_id=%s;""",int(chid))
+    ch=con.query("""SELECT * FROM Channel WHERE channel_id=%s;""",int(chid))
+    print(ch)
     if len(ch)!=0:
-        if ch[0]['user_id']==uid[0]['user_id']:
+
+        if ch[0]['user_id'] == uid :
             showdel=True
         return render(req,'Frontend/channelpage.html',{'pllist':pllist,'ch':ch,'showdel':showdel})
     else:

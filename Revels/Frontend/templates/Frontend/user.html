@@ -10,15 +10,17 @@
 
 <h1>Channels</h1>
 {% for channel in channels %}
-<h3>{{channel.name}}</h3>
-<h4>{{channel.description}}</h4>
+<a href="{% url 'getChannel' channel.channel_id %}">
+  <h3>{{channel.name}}</h3>
+  <h6>{{channel.description}}</h6>
+</a>
 {% endfor %}
 
 <h1>Videos</h1>
 {% for video in videos %}
 <a href="{% url 'viewVideo' video.video_id %}"
 <h3>{{video.title}}</h3>
-<h4>{{video.descr}}</h4>
+<h6>{{video.descr}}</h6>
 </a>
 {% endfor %}
 
