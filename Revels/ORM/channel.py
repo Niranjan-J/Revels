@@ -18,7 +18,7 @@ class Channel():
                          DELETE FROM Playlist WHERE OLD.channel_id = channel_id;
                          DELETE FROM Subscription WHERE OLD.channel_id = channel_id;
                        END//
-
+                DELIMITER ;
             """)
 
     def createTable(self):

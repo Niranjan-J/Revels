@@ -1,15 +1,11 @@
-{% extends 'layouts/base.html' %} 
-{% block title %} 
-Revels 
-{% endblock title %}
-{% block body %}
+{% extends 'layouts/base.html' %} {% block title %} Revels {% endblock title %} {% block body %}
 
 <h3>Categories: </h3>
 <ul>
     {% for item in category %}
-        <li>
-            <a href="{% url 'catvideo' item.text %}">{{ item.text }}</a>
-        </li>
+    <li>
+        <a href="{% url 'catvideo' item.cat_id %}">{{ item.text }}</a>
+    </li>
     {% endfor %}
 </ul>
 {% endblock body %}

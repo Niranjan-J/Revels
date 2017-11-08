@@ -4,7 +4,7 @@ from . import views
 urlpatterns=[
     url(r'^$',views.index,name="index"),
     url(r'^videos/(?P<video_id>[^/]+)/$',views.viewVideo,name="viewVideo"),
-    url(r'^categories/(?P<catname>[^/]+)/$',views.catvideo,name="catvideo"),
+    url(r'^categories/(?P<catid>[^/]+)/$',views.catvideo,name="catvideo"),
     url(r'^upload/$',views.upload,name="upload"),
     url(r'^channel/(?P<chid>[^/]+)/$',views.getChannel,name='getChannel'),
     url(r'^playlist/(?P<plid>[^/]+)/$',views.getPlaylist,name='getPlaylist'),

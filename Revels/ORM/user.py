@@ -44,12 +44,12 @@ class User():
             res1 = prf.createProfile(data,user_id)
 
             if res1 == None :
-                return res1;
+                return res1
 
             #returns None if the transaction completes without errors
             return None
         else :
-            return res;
+            return res
 
     def signInUser(self,data):
         res = self.con.query("""

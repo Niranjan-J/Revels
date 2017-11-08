@@ -24,8 +24,8 @@ vid=Video()
 def index(req):
     return render(req,'Frontend/index.html',{"category":cat.getall()})
 
-def catvideo(req,catname):
-    data=cat.get_CatVideos(catname)
+def catvideo(req,catid):
+    data=cat.get_CatVideos(catid)
     return render(req,'Frontend/category.html',{"data": data})
 
 def upload(req):
@@ -84,13 +84,10 @@ def createChannel(req):
 
 def getChannel(req,chid):
     showdel=False
-    user=sess.checkSession(req)
-    uid = -1
-    if user != None :
-        uid = user[0]['user_id']
+    uid=sess.checkSession(req)
     pllist=con.query("""SELECT * FROM Playlist WHERE channel_id=%s;""",int(chid))
     ch=con.query("""SELECT * FROM Channel WHERE channel_id=%s;""",int(chid))
-    print(ch)
+    subs=False
     if len(ch)!=0:
         if uid!=None:
             if ch[0]['user_id']==uid[0]['user_id']:

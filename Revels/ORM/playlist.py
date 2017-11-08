@@ -7,15 +7,14 @@ class Playlist():
     def createTriggers(self):
         self.con.create("""
         Drop TRIGGER IF EXISTS playlistDeleteTrigger;
-
-              DELIMITER //
-              CREATE TRIGGER playlistDeleteTrigger
-              BEFORE DELETE ON Playlist
-                     FOR EACH ROW
-
-                     BEGIN
-                       DELETE FROM Pl_Vid WHERE OLD.playlist_id = playlist_id;
-                     END//
+            DELIMITER //
+            CREATE TRIGGER playlistDeleteTrigger
+            BEFORE DELETE ON Playlist
+            FOR EACH ROW
+            BEGIN
+            DELETE FROM Pl_Vid WHERE OLD.playlist_id = playlist_id;
+            END;//
+            DELIMITER ;
         """)
 
     def createTable(self):

@@ -5,11 +5,12 @@ from django.shortcuts import render
 from django.views import View
 from django.http import JsonResponse
 from ORM.user import User
+from ORM.dbconnect import Connector
 import datetime
 from ORM.sessions import SessionsManager
 
 # Create your views here.
-
+con=Connector()
 class SignUp(View):
 
     def get(self, request):
@@ -43,22 +44,18 @@ class SignIn(View):
         return render(request,'Auth/signin.html')
 
     def post(self, request):
-
         data = {
             'password' : request.POST['password'].strip(),
             'email' : request.POST['email'].strip(),
         }
-
         response = JsonResponse(data)
         sessionM = SessionsManager()
-
         response = sessionM.createSession(data,response)
-
         if response != None :
             return response
         else :
             var = {
-                'error' : 'res'
+                'error' : 'Wrong Username Or Password'
             }
             return render(request,'Auth/signin.html',var)
 
