@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.views import View
 from django.http import JsonResponse
 from ORM.user import User
@@ -48,7 +48,7 @@ class SignIn(View):
             'password' : request.POST['password'].strip(),
             'email' : request.POST['email'].strip(),
         }
-        response = JsonResponse(data)
+        response = redirect('/')
         sessionM = SessionsManager()
         response = sessionM.createSession(data,response)
         if response != None :

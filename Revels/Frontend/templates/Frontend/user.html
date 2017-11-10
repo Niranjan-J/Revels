@@ -3,43 +3,55 @@
 {{user.username}}
 {% endblock title %}
 {% block body %}
-<h3>{{user.username}}</h3>
-<h4>{{user.firstname}}</h4>
-<h4>{{user.lastname}}</h4>
-<h4>{{user.gender}}</h4>
-
-<h3>Channels</h3>
-<ul>
+<div class="col col-lg-10" style="margin: auto; margin-top: 1em;">
+<section class="row">
+    <i class="fa fa-user-circle col col-lg-3" aria-hidden="true" style="font-size: 7.5em;"></i>
+    <article class=" col col-lg-3">
+        <h1>{{user.username}}</h1>
+        <h4>{{user.firstname}} {{user.lastname}}</h4>
+        <h4>{{user.gender}}</h4>        
+    </article>
+    <hr>
+</section>
+<br>
+<div class="text-center">
+<h3><b>Channels</b></h3>
+<ul class="list-group">
     {% for channel in channels %}
        <li>
-            <a href="{% url 'getChannel' channel.channel_id %}"><h4>{{channel.name}}</h4></a>
-            <h5>{{channel.description}}</h5>
+            <a href="{% url 'getChannel' channel.channel_id %}" class="list-group-item">
+                <h4>{{channel.name}}</h4>
+                <h6>{{channel.description}}</h6>
+            </a>
        </li>
     {% endfor %}
 </ul>
-
-<h3>Videos</h3>
-<ul>
+<br><br>
+<h3><b>Videos</b></h3>
+<ul class="list-group">
     {% for video in videos %}
     <li>
-        <a href="{% url 'viewVideo' video.video_id %}">
+        <a href="{% url 'viewVideo' video.video_id %}" class="list-group-item">
             <h4>{{video.title}}</h4>
+            <h6>{{video.descr}}</h6>
         </a>
-        {{video.descr}}
     </li>
     {% endfor %}
 </ul>
-
-{% if owner == True %}
-    <form action="{% url 'upload'%}" method="get">
+<br>
+<section class="row" style="margin-bottom: 1em;">
+    {% if owner == True %}
+    <form class="col col-lg-6" action="{% url 'upload'%}" method="get">
         {% csrf_token %}
-        <input type="submit" value="Upload Videos">
+        <input type="submit" value="Upload Videos" class="btn btn-primary">
     </form>
-    <form action="{% url 'createChannel'%}" method="get">
+    <form class="col col-lg-6" action="{% url 'createChannel'%}" method="get">
         {% csrf_token %}
-        <input type="submit" value="+ New Channel">
+        <input type="submit" value="New Channel" class="btn btn-primary">
     </form>
-{% endif %}
+{% endif %}    
+</section>
 
-
+</div>
+</div>
 {% endblock body %}

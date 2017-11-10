@@ -5,37 +5,46 @@
 {% endblock title %}
 
 {% block body %}
-{{ video.title }}<br>
-<iframe width="420" height="315"
+<div class="container" style="margin: 0.25em;">
+<h2>{{ video.title }}</h2>
+<iframe width="1000" height="415"
 src="{{ video.url }}">
 </iframe>
 <br>
-By {{ video.username }} ...
-<br><br>
+<h5><b>By {{ video.username }}</b></h5>
+<h6>{{ video.descr }}</h6>
+<br>
 
-<a href="{% url 'addtoplaylist' video.video_id %}"><button>Add To Playlist</button></a><br><br>
-
-<form class="" action="{% url 'likes' video.video_id %}" method="post">
-  {% csrf_token %}
-  {% if liked == False %}
-    <input type="submit" name="like" value="like">
-  {% else %}
-    <input type="submit" name="unlike" value="unlike">
-  {% endif %}
+<div class="row">
+  <form class="col col-lg-1" action="{% url 'likes' video.video_id %}" method="post">
+    {% csrf_token %}
+    {% if liked == False %}
+      <input type="submit" class="btn btn-success" name="like" value="like">
+    {% else %}
+      <input type="submit" class="btn btn-danger" name="unlike" value="unlike">
+    {% endif %}
 </form>
-
-<h3>comments</h3>
-
-<form class="" action="{% url 'create_comment' video.video_id %}" method="post">
+  <section class="col col-lg-10"></section>
+  <a class="col col-lg-1" href="{% url 'addtoplaylist' video.video_id %}"><button class="btn btn-dark">Add To Playlist</button></a><br><br>
+</div>
+<br>
+<form class="col col-lg-10" action="{% url 'create_comment' video.video_id %}" method="post">
   {% csrf_token %}
-  <label for="comment"></label>
-  <input type="text" name="comment" value="">
-  <input type="submit" >
+  <div class="form-group">
+      <label for="comment"><b>Comment</b></label>
+      <small id="commentHelp" class="form-text text-muted">Please leave your comments below ...</small>
+      <input type="comment" class="form-control" id="comment" name="comment" aria-describedby="commentHelp" placeholder="Enter Comment">
+    </div>
 </form>
-
+<ul class="list-group" style="margin-bottom: 1em;">
 {% for comment in comments %}
-  <h6>{{ comment.username }}</h6>
-  <h5>{{ comment.text }}</h5>
-{% endfor %}
+  <li class="list-group-item">
+    <small>{{ comment.username }}</small>
+    <h5>{{ comment.text }}</h5>  
+  </li>
+  
+{% endfor %}  
+</ul>
 
+</div>
 {% endblock body %}

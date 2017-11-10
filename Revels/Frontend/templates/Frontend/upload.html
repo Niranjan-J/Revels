@@ -6,23 +6,34 @@
 {% endblock title %}
 
 {% block body %}
-    <form action="{% url 'upload' %}" method="post">
+    <form action="{% url 'upload' %}" method="post" class="col col-lg-8 text-center" style="margin: auto; margin-top: 1em;">
         {% csrf_token %}
-        <label for="title">Title: </label>
-        <input type="text" name="title" required><br>
-        <label for="descr">Description:</label>
-        <input type="text" name="descr" required><br>
-        <label for="url">Embeded Url: </label>
-        <input type="text" name="url" required><br>
-        <label for="tags">Enter Tags seperated by comma: </label>
-        <input type="text" name="tags" required><br>
-        <label for="category" required>Category: </label><br>
+        <h3>Upload Video</h3><br>
+        <div class="form-group">
+          <input type="text" class="form-control" id="title" name="title" aria-describedby="titleHelp" placeholder="Enter Video Title">
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" id="url" name="url" aria-describedby="urlHelp" placeholder="Enter Video URL">
+        </div>
+        <div class="form-group">
+            <textarea class="form-control" id="descr" name="descr" rows="4" placeholder="Enter Video description"></textarea>
+        </div>
+        
+        <div class="form-group">
+          <input type="text" class="form-control" id="tags" name="tags" aria-describedby="tagsHelp" placeholder="Enter Tags seperated by space">
+        </div>
+
+        <label for="category" required><b><h3>Category: </h3></b></label><br>
 
         {% for cat in category %}
-            <input type="checkbox" name="box" value="{{ cat.cat_id }}"> {{ cat.text }}<br>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="box" value="{{ cat.cat_id }}"> {{ cat.text }}<b>
+              </label>
+            </div>
         {% endfor %}
-
-        <input type="submit" name="submit" value="Upload"><br>
+        <br><br>
+        <input type="submit" name="submit" value="Upload"  class="btn btn-primary"><br>
     </form><br>
     {{ msg }}
 {% endblock body %}
