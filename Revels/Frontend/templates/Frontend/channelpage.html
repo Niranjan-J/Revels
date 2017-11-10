@@ -5,32 +5,37 @@
 {% endblock title %}
 
 {% block body %}
+<div class="col col-lg-8 text-center" style="margin: auto; margin-top: 1em;">
     <h2>{{ ch.0.name }}</h2>
     <h4>{{ ch.0.description }}</h4>
-    <ol>
+    <br>
+    <ul class="list-group">
         {% for pl in pllist %}
-            <li><a href="{% url 'getPlaylist' pl.playlist_id %}">{{ pl.name }}</a></li>
+            <li><a href="{% url 'getPlaylist' pl.playlist_id %}" class="list-group-item">{{ pl.name }}</a></li>
         {% endfor %}        
-    </ol>        
-    
+    </ul>        
+    <br>
     {% if showdel == True %}
         <form action="{% url 'createPlaylist' ch.0.channel_id %}" method="get">
             {% csrf_token %}
-            <input type="submit" value="Create Playlist">
+            <input type="submit" value="Create Playlist" class="btn btn-primary">
         </form>
+        <br>
         <form action="{% url 'deleteChannel' ch.0.channel_id %}" method="post">
             {% csrf_token %}
-            <input type="submit" value="Delete Channel">
+            <input type="submit" value="Delete Channel" class="btn btn-primary">
         </form>
+        <br>
     {% else %}
         <form action="{% url 'subscribe' ch.0.channel_id %}" method="post">
             {% csrf_token %}
             {% if subs == True %}
-                <input type="submit" name="subscribe" value="Unsubscribe">
+                <input type="submit" name="subscribe" value="Unsubscribe" class="btn btn-primary">
             {% else %}
-                <input type="submit" name="subscribe" value="Subscribe">
+                <input type="submit" name="subscribe" value="Subscribe" class="btn btn-primary">
             {% endif %}
         </form>
     {% endif %}
+</div>
 {% endblock body %}
     

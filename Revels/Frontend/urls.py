@@ -1,5 +1,7 @@
 from django.conf.urls import url,include
 from . import views
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns=[
     url(r'^$',views.index,name="index"),
@@ -18,6 +20,7 @@ urlpatterns=[
     url(r'^deletepl/(?P<plid>[^/]+)/$',views.deletePlaylist,name='deletePlaylist'),
     url(r'^deletech/(?P<chid>[^/]+)/$',views.deleteChannel,name='deleteChannel'),
     url(r'^search/$',views.search,name="search"),
-    url(r'^search/(?P<cat>[^/]+)/(?P<query>[^/]+)/$',views.searchResult,name="searchResult"),
+    url(r'^search/(?P<cat>[^/]+)/(?P<query>[^/]+)/$',views.searchResult,name="seastatic in djangorchResult"),
     url(r'^subscribe/(?P<chid>[^/]+)/$',views.subscribe,name='subscribe'),
 ]
+

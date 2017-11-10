@@ -7,21 +7,34 @@
 
 {% block body %}
 <h4>{{ error }}</h4>
-  <form action="{% url 'auth:signup' %}" method="post">
+  <form action="{% url 'auth:signup' %}" method="post" class="col col-lg-4 text-center" style="margin: auto; margin-top: 5em;">
     {% csrf_token %}
-
-    <label for="firstname">firstname</label>
-    <input type="text" name="firstname" value="{{data.firstname}}">
-    <label for="lastname">lastname</label>
-    <input type="text" name="lastname" value="{{data.lastname}}">
-    <label for="username">username</label>
-    <input type="text" name="username" value="{{data.username}}">
-    <label for="email">email</label>
-    <input type="text" name="email" value="{{data.email}}">
-    <label for="password">Password</label>
-    <input type="text" name="password">
-    <label for="gender">gender</label>
-    <input type="text" name="gender" value="{{data.gander}}">
-    <button type="submit" name="submit">submit</button>
+    <h2>Sign Up</h2>
+    <div class="form-group">
+      <input type="text" class="form-control" id="firstname" name="firstname" aria-describedby="firstnameHelp" placeholder="Enter First Name" value="{{data.firstname}}">
+    </div>
+    <div class="form-group">
+      <input type="text" class="form-control" id="lastname" name="lastname" aria-describedby="lastnameHelp" placeholder="Enter Last Name" value="{{data.lastname}}">
+    </div>
+    <div class="form-group">
+      <input type="text" class="form-control" id="username" name="username" aria-describedby="usernameHelp" placeholder="Enter User Name" value="{{data.username}}">
+    </div>
+    <div class="form-group">
+      <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="Enter Email" value="{{data.email}}">
+    </div>
+    <div class="form-group">
+      <input type="password" class="form-control" id="password" name="password" aria-describedby="passwordHelp" placeholder="Enter Password" value="{{data.password}}">
+    </div>
+    <div class="form-group">
+      <input type="passwordConf" class="form-control" id="passwordConf" name="passwordConf" aria-describedby="passwordHelp" placeholder="Enter Password Again" value="{{data.passwordConf}}">
+    </div>
+    <div class="form-group">
+    <label for="gender">Gender</label>
+        <select class="form-control" id="gender" name="gender" value="{{data.gander}}">
+          <option>M</option>
+          <option>F</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Sign in</button>
   </form>
 {% endblock %}
