@@ -3,7 +3,7 @@
 {{user.username}}
 {% endblock title %}
 {% block body %}
-<div class="col col-lg-10" style="margin: auto; margin-top: 1em;">
+<div class="col col-lg-10" style="margin: auto; margin-top: 3em;">
 <section class="row">
     <i class="fa fa-user-circle col col-lg-3" aria-hidden="true" style="font-size: 7.5em;"></i>
     <article class=" col col-lg-3">
@@ -41,11 +41,12 @@
 <br>
 <section class="row" style="margin-bottom: 1em;">
     {% if owner == True %}
-    <form class="col col-lg-6" action="{% url 'upload'%}" method="get">
+    <form class="col col-lg-4" action="{% url 'upload'%}" method="get">
         {% csrf_token %}
         <input type="submit" value="Upload Videos" class="btn btn-primary">
     </form>
-    <form class="col col-lg-6" action="{% url 'createChannel'%}" method="get">
+    <a class="col col-lg-4 btn btn-danger" href="{% url 'auth:signout' %}">Sign Out</a>
+    <form class="col col-lg-4" action="{% url 'createChannel'%}" method="get">
         {% csrf_token %}
         <input type="submit" value="New Channel" class="btn btn-primary">
     </form>

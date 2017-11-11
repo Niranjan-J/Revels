@@ -5,19 +5,21 @@
 {% endblock title %}
 
 {% block body %}
-<div class="container" style="margin: 0.25em;">
-<h2>{{ video.title }}</h2>
-<iframe width="1000" height="415"
-src="{{ video.url }}">
-</iframe>
+<div class="container" style="margin: auto; margin-top: 3em ">
+<h2 class="text-center">{{ video.title }}</h2><br>
+<div class="text-center embed-responsive embed-responsive-16by9">
+  <iframe class="embed-responsive-item" src="{{ video.url }}" allowfullscreen></iframe>
+</div>
 <br>
 <h5><b>By {{ video.username }}</b></h5>
 <h6>{{ video.descr }}</h6>
 <br>
 
 <div class="row">
+
   <form class="col col-lg-1" action="{% url 'likes' video.video_id %}" method="post">
     {% csrf_token %}
+    <h5>{{ likes }} Likes</h5>
     {% if liked == False %}
       <input type="submit" class="btn btn-success" name="like" value="like">
     {% else %}
@@ -35,6 +37,7 @@ src="{{ video.url }}">
       <small id="commentHelp" class="form-text text-muted">Please leave your comments below ...</small>
       <input type="comment" class="form-control" id="comment" name="comment" aria-describedby="commentHelp" placeholder="Enter Comment">
     </div>
+    <input type="submit" class="btn btn-primary" value="Add comment">
 </form>
 <ul class="list-group" style="margin-bottom: 1em;">
 {% for comment in comments %}
