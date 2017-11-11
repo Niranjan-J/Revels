@@ -3,15 +3,24 @@
     Add To Playlist...
 {% endblock title %}
 {% block body %}
-    <form action="{% url 'addtoplaylist' vid %}" method="post">
+    <form action="{% url 'addtoplaylist' vid %}" method="post" class="container text-center" style="margin: auto; margin-top: 5em;">
         {% csrf_token %}
-        {% for item in data %}
-            <h3>{{ item.chname }}</h3>
-            {% for pl in item.playlists %}
-                <input type="checkbox" name="box" value="{{ pl.playlist_id }}">{{ pl.plname }}<br>
-            {% endfor %}
-        {% endfor %}
-        <br></btr><input type="submit" value="Add">
+        <ol class="list-group">
+            {% for item in data %}
+                <li class=" list-group-item">
+                    <div class="form-group">
+                    <h3>{{ item.chname }}</h3>
+                {% for pl in item.playlists %}
+                <label class="form-check-label">
+                    <input type="checkbox" class="form-check-input" name="box" value="{{ pl.playlist_id }}">{{ pl.plname }}<br>
+                </label>
+                {% endfor %}
+                    </div>
+                </li>
+            {% endfor %}    
+        </ol>
+        
+        <br></btr><input type="submit" value="Add" class="btn btn-primary">
     </form>
 {% endblock body %}
     

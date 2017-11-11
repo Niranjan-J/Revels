@@ -22,6 +22,10 @@
       <input type="password" class="form-control" id="password" name="password" aria-describedby="emailHelp" placeholder="Enter Password">
       <small id="passwordHelp" class="form-text text-muted">We'll never share your password with anyone else.</small>
     </div>
-    <button type="submit" class="btn btn-primary">Sign in</button>
+    <section class="row">
+      <button type="submit" class="btn btn-primary col col-lg-4">Sign in</button>
+      <div class="col-lg-4"></div>
+      <a href="{% url 'auth:signup' %}" class="btn btn-secondary col col-lg-4">Sign Up</a>
+    </section>
   </form>
 {% endblock %}
