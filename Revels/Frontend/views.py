@@ -123,16 +123,21 @@ def getPlaylist(req,plid):
 
 def createPlaylist(req,chid):
     uid=sess.checkSession(req)
+    print(uid[0]['user_id'])
     if uid!=None:
-        ch=con.query("SELECT channel_id,name FROM Channel WHERE channel_id=%s",chid)
-        if req.method=='GET':
-            return render(req,'Frontend/createplaylist.html',{'ch':ch})
-        elif req.method=='POST':
-            con.modify("""
-                INSERT INTO Playlist(name,channel_id)
-                VALUES(%s,%s);
-            """,req.POST['name'].strip(),ch[0]['channel_id'])
-            return render(req,'Frontend/createplaylist.html',{'ch':ch,'msg':"Playlist Successfully created !!"})
+        ch=con.query("SELECT channel_id,name FROM Channel WHERE channel_id=%s AND user_id=%s",int(chid),int(uid[0]['user_id']))
+        if ch == None:
+            return redirect('/')
+        else:
+            if req.method=='GET':
+
+                return render(req,'Frontend/createplaylist.html',{'ch':ch})
+            elif req.method=='POST':
+                con.modify("""
+                    INSERT INTO Playlist(name,channel_id)
+                    VALUES(%s,%s);
+                """,req.POST['name'].strip(),ch[0]['channel_id'])
+                return render(req,'Frontend/createplaylist.html',{'ch':ch,'msg':"Playlist Successfully created !!"})
     else:
         return redirect('auth:signin')
 
