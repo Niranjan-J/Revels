@@ -52,7 +52,6 @@ class SessionsManager():
         else :
             return None
 
-
     # checks the request for the sessions cookies and matches it with the sessions table
     def checkSession(self,request) :
         try :
@@ -68,3 +67,4 @@ class SessionsManager():
                 return None
         except :
             return None
+

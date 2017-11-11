@@ -67,6 +67,14 @@ def SignOut(request):
             pass
         return response
 
+def Profile(request):
+    sessionM = SessionsManager()
+    res = sessionM.checkSession(request)
+    if(res != None):
+        return redirect('/users/' + str(res[0]['user_id']))
+    else:
+        return redirect('auth:signin')
+
 class Home(View):
 
     def get(self, request):
