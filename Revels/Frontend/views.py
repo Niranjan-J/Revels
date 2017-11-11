@@ -137,6 +137,11 @@ def createPlaylist(req,chid):
         return redirect('auth:signin')
 
 def viewVideo(req,video_id):
+    uid=sess.checkSession(req)
+    if uid==None:
+        uid=0
+    else:
+        uid=uid[0]['user_id']
     video = con.query("SELECT * FROM Video NATURAL JOIN User_Profile WHERE video_id=%s",int(video_id))
     comm = con.query("SELECT * FROM  User_Profile NATURAL JOIN Comment where Comment.video_id = %s", video[0]['video_id'])
     likes = con.query("SELECT COUNT(*) as c FROM `Like` WHERE video_id = %s",video[0]['video_id'])
@@ -145,7 +150,7 @@ def viewVideo(req,video_id):
             'video' : video[0],
             'comments' : comm,
             'likes' : likes[0]['c'],
-            'liked' : vid.get_like(video[0]['video_id'])
+            'liked' : vid.get_like(video[0]['video_id'],uid)
         }
         return render(req,'Frontend/video.html',var)
 

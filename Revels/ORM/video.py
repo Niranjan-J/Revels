@@ -59,8 +59,8 @@ class Video():
     def get_vid_id(self,data):
         return  self.con.query("SELECT video_id FROM Video WHERE url=%s",data['url'])
 
-    def get_like(self,video_id):
-        res = self.con.query("SELECT * FROM `Like` WHERE video_id = %s",int(video_id))
+    def get_like(self,video_id,uid):
+        res = self.con.query("SELECT * FROM `Like` WHERE video_id = %s AND user_id=%s",int(video_id),int(uid))
         if(len(res) > 0) :
             return True
         else :

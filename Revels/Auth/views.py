@@ -7,6 +7,7 @@ from django.http import JsonResponse
 from ORM.user import User
 from ORM.dbconnect import Connector
 import datetime
+import hashlib
 from ORM.sessions import SessionsManager
 
 # Create your views here.
@@ -21,16 +22,16 @@ class SignUp(View):
         data = {
             'firstname' : request.POST['firstname'].strip(),
             'lastname' : request.POST['lastname'].strip(),
-            'password' : request.POST['password'].strip(),
+            'password' : str(hashlib.md5(request.POST['password'].strip().encode()).hexdigest()),
             'email' : request.POST['email'].strip(),
             'username' : request.POST['username'].strip(),
             'gender' : request.POST['gender'].strip(),
         }
 
         res = user.createUser(data)
-
+        response = redirect('auth:signin')
         if res == None :
-            return JsonResponse(data)
+            return response
         else :
             var = {
                 'error' : res,
@@ -45,7 +46,7 @@ class SignIn(View):
 
     def post(self, request):
         data = {
-            'password' : request.POST['password'].strip(),
+            'password' : str(hashlib.md5(request.POST['password'].strip().encode()).hexdigest()),
             'email' : request.POST['email'].strip(),
         }
         response = redirect('/')

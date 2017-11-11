@@ -25,7 +25,7 @@ SECRET_KEY = 'lfq_#wu+k_tsbgxo^&&o1mxk_d813qylfhv+t!jr5%ust-a3(q'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS =['*']
 
 # Enviroinment Variables
 env = environ.Env(DEBUG=(bool, False),)
