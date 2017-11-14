@@ -123,14 +123,12 @@ def getPlaylist(req,plid):
 
 def createPlaylist(req,chid):
     uid=sess.checkSession(req)
-    print(uid[0]['user_id'])
     if uid!=None:
         ch=con.query("SELECT channel_id,name FROM Channel WHERE channel_id=%s AND user_id=%s",int(chid),int(uid[0]['user_id']))
         if ch == None:
             return redirect('/')
         else:
             if req.method=='GET':
-
                 return render(req,'Frontend/createplaylist.html',{'ch':ch})
             elif req.method=='POST':
                 con.modify("""
@@ -310,8 +308,8 @@ def search(req) :
 
         if cat == "Videos" :
             res = con.query("""
-            SELECT * FROM Video WHERE Video.title LIKE %s OR Video.descr LIKE %s;
-            """,("%"+qr+"%"),("%"+qr+"%"))
+            SELECT * FROM Video LEFT join Tag on Video.video_id=Tag.video_id WHERE Video.title LIKE %s OR Tag.tag LIKE %s OR Video.descr LIKE %s;
+            """,("%"+qr+"%"),("%"+qr+"%"),("%"+qr+"%"))
 
         if cat == "Users" :
             res = con.query("""
@@ -327,8 +325,6 @@ def search(req) :
             "cat":cat
             })
 
-def searchResult(req,cat,query) :
-    pass
 def subscribe(req,chid):
     uid=sess.checkSession(req)
     if uid!=None:
