@@ -20,7 +20,7 @@
                     <h6>{{channel.description}}</h6>
                 </a>
             </li>
-            {% endfor %}
+            {% empty %} No Channels {% endfor %}
         </ul>
         <br><br>
         <h3><b>Videos</b></h3><br>
@@ -42,9 +42,22 @@
               </div>
               </div>
             <br>
+            {% empty %} No Uploaded Videos
             {% endfor %}
         </div>
         <br>
+        <h3><b>Subscribed Channels</b></h3>
+        <ul class="list-group">
+            {% for channel in subchannel %}
+            <li>
+                <a href="{% url 'getChannel' channel.channel_id %}" class="list-group-item">
+                    <h4>{{channel.name}}</h4>
+                    <h6>{{channel.description}}</h6>
+                </a>
+            </li>
+            {% empty %} No Subsciptions {% endfor %}
+        </ul>
+        <br><br>
         <section class="row" style="margin-bottom: 1em;">
             {% if owner == True %}
             <form class="col col-lg-4" action="{% url 'upload'%}" method="get">

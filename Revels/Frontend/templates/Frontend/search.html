@@ -23,27 +23,27 @@
         <a class="list-group-item" href="{% url 'catvideo' res.cat_id %}">
             <h4>{{res.text}}</h4>
         </a>
-        {% endfor %} {% endif %} {% if cat == "Channels" %}
+        {% empty %} No Videos Found {% endfor %} {% endif %} {% if cat == "Channels" %}
         <h3 class="text-center">Channels</h3>
         {% for res in result %}
         <a class="list-group-item" href="{% url 'getChannel' res.channel_id %}">
             <h5><b>{{res.name}}</b></h4>
                 <h6>{{res.description}}</h4>
         </a>
-        {% endfor %} {% endif %} {% if cat == "Playlists" %}
+        {% empty %} No Videos Found {% endfor %} {% endif %} {% if cat == "Playlists" %}
         <h3 class="text-center">Playlists</h3>
         {% for res in result %}
         <a class="list-group-item" href="{% url 'getPlaylist' res.playlist_id %}">
             <h5>{{res.name}}</h5>
         </a>
-        {% endfor %} {% endif %} {% if cat == "Videos" %}
+        {% empty %} No Videos Found {% endfor %} {% endif %} {% if cat == "Videos" %}
         <h3 class="text-center">Videos</h3>
         {% for res in result %}
         <a class="list-group-item" href="{% url 'viewVideo' res.video_id %}">
             <h5><b>{{res.title}}</b></h5>
             <h6>{{res.descr}}</h6>
         </a>
-        {% endfor %} {% endif %} {% if cat == "Users" %}
+        {% empty %} No Videos Found {% endfor %} {% endif %} {% if cat == "Users" %}
         <h3 class="text-center">Users</h3>
         {% for res in result %}
         <a class="row list-group-item" href="{% url 'userProfile' res.user_id %}">
@@ -52,6 +52,6 @@
                 <h4>{{res.firstname}} {{res.lastname}}</h4>
             </article>
         </a>
-        {% endfor %} {% endif %} {% endif %}
+        {% empty %} No Videos Found {% endfor %} {% endif %} {% endif %}
 </div>
 {% endblock body %}
