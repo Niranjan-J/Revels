@@ -20,11 +20,11 @@
                     <h6>{{channel.description}}</h6>
                 </a>
             </li>
-            {% empty %} No Channels {% endfor %}
+            {% empty %} <h4 class="text-center" style="width:100%;">No Channels</h4>{% endfor %}
         </ul>
         <br><br>
         <h3><b>Videos</b></h3><br>
-        <div class="row">
+        <div class="row text-center">
             {% for video in videos %}
             <div class="col-lg-4" style="padding:0.5em">
                 <div class="card">
@@ -35,14 +35,13 @@
                         {% if owner == True %}
                         <form action="{% url 'deleteVid' video.video_id %} " method="post " style="margin: 1em ">
                             {% csrf_token %}
-                            <input type="submit " value="Remove " class="btn btn-danger ">
+                            <input type="submit" value="Remove " class="btn btn-danger ">
                         </form>
                         {% endif %}
-
                     </div>
                 </div>
             </div>
-            <br> {% empty %} No Uploaded Videos {% endfor %}
+            <br> {% empty %}<h5 class="text-center" style="width:100%;"> No Uploaded Videos </h5>{% endfor %}
         </div>
         <br>
         <h3><b>Subscribed Channels</b></h3>
@@ -54,19 +53,19 @@
                     <h6>{{channel.description}}</h6>
                 </a>
             </li>
-            {% empty %} No Subsciptions {% endfor %}
+            {% empty %}<h4 class="text-center" style="width:100%;"> No Subsciptions </h4>{% endfor %}
         </ul>
         <br><br>
         <section class="row " style="margin-bottom: 1em; ">
             {% if owner == True %}
             <form class="col col-lg-4 " action="{% url 'upload'%} " method="get ">
                 {% csrf_token %}
-                <input type="submit " value="Upload Videos " class="btn btn-primary ">
+                <input type="submit" value="Upload Videos" class="btn btn-primary ">
             </form>
             <a class="col col-lg-4 btn btn-danger" href="{% url 'auth:signout' %} ">Sign Out</a>
             <form class="col col-lg-4 " action="{% url 'createChannel'%} " method="get ">
                 {% csrf_token %}
-                <input type="submit " value="New Channel " class="btn btn-primary ">
+                <input type="submit" value="New Channel " class="btn btn-primary ">
             </form>
             {% endif %}
         </section>
