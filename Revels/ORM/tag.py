@@ -8,7 +8,7 @@ class Tag():
         self.con.create("""
             CREATE TABLE IF NOT EXISTS Tag(
                 video_id INT,
-                tag VARCHAR(200) NOT NULL UNIQUE,
+                tag VARCHAR(200) NOT NULL,
                 PRIMARY KEY (video_id,tag),
                 FOREIGN KEY (video_id) REFERENCES Video(video_id)
             );
