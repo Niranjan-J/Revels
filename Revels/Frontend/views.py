@@ -21,6 +21,9 @@ cat=Category()
 tag=Tag()
 vid=Video()
 
+def trimVidDesc(s):
+    return (' '.join(s.split(' ')[:35])) + "..."
+
 def index(req):
     return render(req,'Frontend/index.html',{"category":cat.getall()})
 
@@ -292,6 +295,8 @@ def getUserDetails(req,usr):
     videosdata = (con.query("""
       SELECT * FROM Video WHERE user_id = %s
     """,usr))
+    for i in range(len(videosdata)) :
+        videosdata[i]['descr'] = trimVidDesc(videosdata[i]['descr'])
     channelsdata = (con.query("""
       SELECT * FROM Channel  WHERE user_id = %s
     """,usr))
@@ -313,6 +318,8 @@ def search(req) :
             res = con.query("""
             SELECT * FROM Channel WHERE Channel.name LIKE %s OR Channel.description LIKE %s;
             """,("%"+qr+"%"),("%"+qr+"%"))
+            for i in range(len(res)) :
+                res[i]['description'] = trimVidDesc(res[i]['description'])
 
         if cat == "Categories" :
             res = con.query("""
@@ -332,6 +339,8 @@ def search(req) :
             Video.title LIKE %s OR
             Video.descr LIKE %s;
             """,("%"+qr+"%"),("%"+qr+"%"),("%"+qr+"%"))
+            for i in range(len(res)) :
+                res[i]['descr'] = trimVidDesc(res[i]['descr'])
 
         if cat == "Users" :
             res = con.query("""

@@ -23,23 +23,27 @@
             {% endfor %}
         </ul>
         <br><br>
-        <h3><b>Videos</b></h3>
-        <ul class="list-group">
+        <h3><b>Videos</b></h3><br>
+        <div class="row">
             {% for video in videos %}
-            <li>
-                <a href="{% url 'viewVideo' video.video_id %}" class="list-group-item">
-                    <h4>{{video.title}}</h4>
-                    <h6>{{video.descr}}</h6>
-                </a>
+              <div class="col-lg-4" style="padding:0.5em">
+              <div class="card">
+              <div class="card-block" style="padding:1em">
+                <h4 class="card-title">{{video.title}}</h4>
+                <p class="card-text">{{video.descr}}</p>
                 {% if owner == True %}
-                <form action="{% url 'deleteVid' video.video_id %}" class="col col-lg-2" method="post" style="margin-top: 0.25em">
-                    {% csrf_token %}
-                    <input type="submit" value="X" class="btn btn-danger">
-                </form>
-                {% endif %}
-            </li>
+              <form action="{% url 'deleteVid' video.video_id %}" method="post" style="margin: 1em">
+                  {% csrf_token %}
+                  <input type="submit" value="Remove" class="btn btn-danger">
+              </form>
+              {% endif %}
+
+              </div>
+              </div>
+              </div>
+            <br>
             {% endfor %}
-        </ul>
+        </div>
         <br>
         <section class="row" style="margin-bottom: 1em;">
             {% if owner == True %}

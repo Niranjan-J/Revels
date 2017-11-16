@@ -21,7 +21,7 @@ class Video():
             """)
 
     def createTriggers(self):
-      self.con.create(""" 
+      self.con.create("""
               Drop TRIGGER IF EXISTS videoDeleteTrigger;
               DELIMITER //
               CREATE TRIGGER videoDeleteTrigger
@@ -66,4 +66,4 @@ class Video():
         else :
             return False
 
-
+    
