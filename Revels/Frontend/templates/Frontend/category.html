@@ -5,18 +5,17 @@
 {% endblock title %}
 
 {% block body %}
-    <div  class="col col-lg-8 text-center">
-        <ul  class="list-group" >    
+    <div class="col col-lg-10 text-center" style="margin:auto; margin-top:3em;">
+        <ul class="list-group" >
         {% for item in data %}
-            <li class="list-group-item">
-                {{ item.title }}<br>
-                <iframe width="420" height="315"
-                src="{{ item.url }}">
-                </iframe>
+            <li>
+              <a class="list-group-item" href="{% url 'viewVideo' item.video_id %}">
+                  <h5><b>{{item.title}}</b></h5>
+                  <h6>{{item.descr}}</h6>
+              </a>
             </li>
-        {% endfor %}    
-        </ul>    
+        {% endfor %}
+        </ul>
     </div>
-    
+
 {% endblock body %}
-    
