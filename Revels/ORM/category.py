@@ -35,6 +35,6 @@ class Category():
             WHERE Video.video_id=Vid_Cat.Video_id
             AND Vid_Cat. cat_id=Category.cat_id AND Category.cat_id=%s
             ;""",catid)
-        for i in range(len(res))
+        for i in range(len(res)) :
             res[i]['descr'] = self.trimVidDesc(res[i]['descr'])
         return res
