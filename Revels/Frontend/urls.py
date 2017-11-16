@@ -20,6 +20,6 @@ urlpatterns=[
     url(r'^deletepl/(?P<plid>[^/]+)/$',views.deletePlaylist,name='deletePlaylist'),
     url(r'^deletech/(?P<chid>[^/]+)/$',views.deleteChannel,name='deleteChannel'),
     url(r'^search/$',views.search,name="search"),
+    url(r'^tagSearch/(?P<tag>.*)/$',views.tagSearch,name="tagSearch"),
     url(r'^subscribe/(?P<chid>[^/]+)/$',views.subscribe,name='subscribe'),
 ]
-

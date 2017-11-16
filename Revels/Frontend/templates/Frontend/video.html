@@ -11,6 +11,12 @@
   <iframe class="embed-responsive-item" src="{{ video.url }}" allowfullscreen></iframe>
 </div>
 <br>
+<ul class="list-inline">
+  {% for tag in tags %}
+  <a href="{% url 'tagSearch' tag.tag %}"><li class="badge badge-primary">{{tag.tag}}</li></a>
+  {% endfor %}
+</ul>
+<br>
 <h5><b>By {{ video.username }}</b></h5>
 <h6>{{ video.descr }}</h6>
 <br>
@@ -39,14 +45,15 @@
     </div>
     <input type="submit" class="btn btn-primary" value="Add comment">
 </form>
+<br>
 <ul class="list-group" style="margin-bottom: 1em;">
 {% for comment in comments %}
   <li class="list-group-item">
-    <small>{{ comment.username }}</small>
-    <h5>{{ comment.text }}</h5>  
+    <a href="{% url 'userProfile' comment.user_id %}"><small><b>{{ comment.username }}</b></small></a>
+    <h5>{{ comment.text }}</h5>
   </li>
-  
-{% endfor %}  
+
+{% endfor %}
 </ul>
 
 </div>
