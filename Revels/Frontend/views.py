@@ -146,12 +146,14 @@ def viewVideo(req,video_id):
     else:
         uid=uid[0]['user_id']
     video = con.query("SELECT * FROM Video NATURAL JOIN User_Profile WHERE video_id=%s",int(video_id))
+    tags = con.query("SELECT * FROM Tag WHERE video_id=%s",int(video_id))
     comm = con.query("SELECT * FROM  User_Profile NATURAL JOIN Comment where Comment.video_id = %s", video[0]['video_id'])
     likes = con.query("SELECT COUNT(*) as c FROM `Like` WHERE video_id = %s",video[0]['video_id'])
     if req.method=='GET':
         var = {
             'video' : video[0],
             'comments' : comm,
+            'tags' : tags,
             'likes' : likes[0]['c'],
             'liked' : vid.get_like(video[0]['video_id'],uid)
         }
@@ -308,7 +310,11 @@ def search(req) :
 
         if cat == "Videos" :
             res = con.query("""
-            SELECT * FROM Video LEFT join Tag on Video.video_id=Tag.video_id WHERE Video.title LIKE %s OR Tag.tag LIKE %s OR Video.descr LIKE %s;
+            SELECT Video.*,Tag.tag FROM Video LEFT JOIN Tag
+            ON Video.video_id=Tag.video_id WHERE
+            UPPER(Tag.tag) LIKE UPPER(%s) OR
+            UPPER(Video.title) LIKE UPPER(%s) OR
+            UPPER(Video.descr) LIKE UPPER(%s);
             """,("%"+qr+"%"),("%"+qr+"%"),("%"+qr+"%"))
 
         if cat == "Users" :
@@ -318,7 +324,6 @@ def search(req) :
                 User_Profile.lastname LIKE %s OR
                 User_Profile.username LIKE %s;
             """,("%"+qr+"%"),("%"+qr+"%"),("%"+qr+"%"))
-
 
         return render(req,'Frontend/search.html',{
             "result":res,
@@ -341,3 +346,15 @@ def subscribe(req,chid):
         return redirect('getChannel',chid)
     else:
         return redirect('auth:signin')
+
+def tagSearch(req,tag):
+
+    res = con.query("""
+    SELECT Video.*,Tag.tag FROM Video LEFT JOIN Tag
+    ON Video.video_id=Tag.video_id WHERE
+    UPPER(Tag.tag) LIKE UPPER(%s);
+    """,tag)
+    return render(req,'Frontend/search.html',{
+        "result":res,
+        "cat":"Videos"
+        })
