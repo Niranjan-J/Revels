@@ -41,7 +41,7 @@ def upload(req):
             data={
                 'title': req.POST['title'].strip(),
                 'descr':req.POST['descr'].strip(),
-                'url': req.POST['url'].strip(),
+                'url': req.POST['url'].strip().replace("youtu.be","www.youtube.com/embed"),
                 'tags': req.POST['tags'].strip(),
                 'user_id': uid[0]['user_id'],
                 'vidcatlist':req.POST.getlist('box')

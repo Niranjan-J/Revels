@@ -63,7 +63,7 @@
                 {% csrf_token %}
                 <input type="submit " value="Upload Videos " class="btn btn-primary ">
             </form>
-            <a class="col col-lg-4 btn btn-danger " href="{% url 'auth:signout' %} ">Sign Out</a>
+            <a class="col col-lg-4 btn btn-danger" href="{% url 'auth:signout' %} ">Sign Out</a>
             <form class="col col-lg-4 " action="{% url 'createChannel'%} " method="get ">
                 {% csrf_token %}
                 <input type="submit " value="New Channel " class="btn btn-primary ">
