@@ -1,60 +1,54 @@
-{% extends 'layouts/base.html' %}
-
-{% block title %}
-    {{ video.title }}
-{% endblock title %}
-
-{% block body %}
+{% extends 'layouts/base.html' %} {% block title %} {{ video.title }} {% endblock title %} {% block body %}
 <div class="container" style="margin: auto; margin-top: 3em ">
-<h2 class="text-center">{{ video.title }}</h2><br>
-<div class="text-center embed-responsive embed-responsive-16by9">
-  <iframe class="embed-responsive-item" src="{{ video.url }}" allowfullscreen></iframe>
-</div>
-<br>
-<ul class="list-inline">
-  {% for tag in tags %}
-  <a href="{% url 'tagSearch' tag.tag %}"><li class="badge badge-primary">{{tag.tag}}</li></a>
-  {% endfor %}
-</ul>
-<br>
-<h5><b>By {{ video.username }}</b></h5>
-<h6>{{ video.descr }}</h6>
-<br>
-
-<div class="row">
-
-  <form class="col col-lg-1" action="{% url 'likes' video.video_id %}" method="post">
-    {% csrf_token %}
-    <h5>{{ likes }} Likes</h5>
-    {% if liked == False %}
-      <input type="submit" class="btn btn-success" name="like" value="like">
-    {% else %}
-      <input type="submit" class="btn btn-danger" name="unlike" value="unlike">
-    {% endif %}
-</form>
-  <section class="col col-lg-10"></section>
-  <a class="col col-lg-1" href="{% url 'addtoplaylist' video.video_id %}"><button class="btn btn-dark">Add To Playlist</button></a><br><br>
-</div>
-<br>
-<form class="col col-lg-10" action="{% url 'create_comment' video.video_id %}" method="post">
-  {% csrf_token %}
-  <div class="form-group">
-      <label for="comment"><b>Comment</b></label>
-      <small id="commentHelp" class="form-text text-muted">Please leave your comments below ...</small>
-      <input type="comment" class="form-control" id="comment" name="comment" aria-describedby="commentHelp" placeholder="Enter Comment">
+    <h2 class="text-center">{{ video.title }}</h2><br>
+    <div class="text-center embed-responsive embed-responsive-16by9">
+        <iframe class="embed-responsive-item" src="{{ video.url }}" allowfullscreen></iframe>
     </div>
-    <input type="submit" class="btn btn-primary" value="Add comment">
-</form>
-<br>
-<ul class="list-group" style="margin-bottom: 1em;">
-{% for comment in comments %}
-  <li class="list-group-item">
-    <a href="{% url 'userProfile' comment.user_id %}"><small><b>{{ comment.username }}</b></small></a>
-    <h5>{{ comment.text }}</h5>
-  </li>
+    <br>
+    <ul class="list-inline">
+        {% for tag in tags %}
+        <a href="{% url 'tagSearch' tag.tag %}">
+            <li class="badge badge-primary">{{tag.tag}}</li>
+        </a>
+        {% endfor %}
+    </ul>
+    <br>
+    <h5><b>By <a href="{% url 'userProfile' video.user_id %}">{{ video.username }}</a></b></h5>
+    <h6>{{ video.descr }}</h6>
+    <br>
 
-{% endfor %}
-</ul>
+    <div class="row">
+
+        <form class="col col-lg-1" action="{% url 'likes' video.video_id %}" method="post">
+            {% csrf_token %}
+            <h5>{{ likes }} Likes</h5>
+            {% if liked == False %}
+            <input type="submit" class="btn btn-success" name="like" value="like"> {% else %}
+            <input type="submit" class="btn btn-danger" name="unlike" value="unlike"> {% endif %}
+        </form>
+        <section class="col col-lg-10"></section>
+        <a class="col col-lg-1" href="{% url 'addtoplaylist' video.video_id %}"><button class="btn btn-dark">Add To Playlist</button></a><br><br>
+    </div>
+    <br>
+    <form class="col col-lg-10" action="{% url 'create_comment' video.video_id %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="comment"><b>Comment</b></label>
+            <small id="commentHelp" class="form-text text-muted">Please leave your comments below ...</small>
+            <input type="comment" class="form-control" id="comment" name="comment" aria-describedby="commentHelp" placeholder="Enter Comment">
+        </div>
+        <input type="submit" class="btn btn-primary" value="Add comment">
+    </form>
+    <br>
+    <ul class="list-group" style="margin-bottom: 1em;">
+        {% for comment in comments %}
+        <li class="list-group-item">
+            <a href="{% url 'userProfile' comment.user_id %}"><small><b>{{ comment.username }}</b></small></a>
+            <h5>{{ comment.text }}</h5>
+        </li>
+
+        {% endfor %}
+    </ul>
 
 </div>
 {% endblock body %}

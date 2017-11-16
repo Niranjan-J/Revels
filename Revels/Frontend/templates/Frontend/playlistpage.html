@@ -1,35 +1,25 @@
-{% extends 'layouts/base.html' %}
-
-{% block title %}
-    {{ pl.0.name }}
-{% endblock title %}
-
-{% block body %}
+{% extends 'layouts/base.html' %} {% block title %} {{ pl.0.name }} {% endblock title %} {% block body %}
 <div class="col col-lg-8 text-center" style="margin: auto; margin-top: 1em;">
     <h4>{{ pl.0.name }}</h4>
-    <br>
-    {{ msg }}
+    <br> {{ msg }}
     <ol class="list-group">
         {% for item in vidlist %}
-            <li class="row">
-                <a href="{% url 'viewVideo' item.video_id %}" class=" list-group-item col col-lg-10">{{ item.title }}</a>
-                
-                {% if showdel == True %}
-                    <form action="{% url 'removeVidPl' plid=pl.0.playlist_id vid=item.video_id %}" class="col col-lg-2" method="post" style="margin-top: 0.25em">
-                        {% csrf_token %}
-                        <input type="submit" value="X" class="btn btn-danger">
-                    </form>
-                {% endif %}
-                    
-            </li>
+        <li class="row">
+            <a href="{% url 'viewVideo' item.video_id %}" class=" list-group-item col col-lg-10">{{ item.title }}</a> {% if showdel == True %}
+            <form action="{% url 'removeVidPl' plid=pl.0.playlist_id vid=item.video_id %}" class="col col-lg-2" method="post" style="margin-top: 0.25em">
+                {% csrf_token %}
+                <input type="submit" value="X" class="btn btn-danger">
+            </form>
+            {% endif %}
+
+        </li>
         {% endfor %}
     </ol>
-    <br>
-    {% if showdel == True %}
-        <form action="{% url 'deletePlaylist' pl.0.playlist_id %}" method="post">
-            {% csrf_token %}
-            <input type="submit" value="Delete Playlist"  class="btn btn-danger">
-        </form>
+    <br> {% if showdel == True %}
+    <form action="{% url 'deletePlaylist' pl.0.playlist_id %}" method="post">
+        {% csrf_token %}
+        <input type="submit" value="Delete Playlist" class="btn btn-danger">
+    </form>
     {% endif %}
 </div>
 {% endblock body %}

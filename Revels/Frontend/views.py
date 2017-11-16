@@ -264,6 +264,22 @@ def deleteChannel(req,chid):
     else :
         return redirect('auth:signin')
 
+def deleteVid(req,vid):
+    uid=sess.checkSession(req)
+    viddet=con.query("""SELECT * FROM Video
+            WHERE video_id=%s;""",vid)
+    if uid!=None:
+        if uid[0]['user_id']==viddet[0]['user_id']:
+            con.modify("""DELETE FROM Video
+                WHERE video_id=%s;
+                """,vid)
+            return redirect('userProfile',uid[0]['user_id'])
+        else:
+            return redirect('userProfile',uid[0]['user_id'])
+    else :
+        return redirect('auth:signin')
+
+
 def getUserDetails(req,usr):
     uid=sess.checkSession(req)
     owner=False
@@ -310,11 +326,11 @@ def search(req) :
 
         if cat == "Videos" :
             res = con.query("""
-            SELECT Video.*,Tag.tag FROM Video LEFT JOIN Tag
+            SELECT DISTINCT Video.*,Tag.tag FROM Video LEFT JOIN Tag
             ON Video.video_id=Tag.video_id WHERE
-            UPPER(Tag.tag) LIKE UPPER(%s) OR
-            UPPER(Video.title) LIKE UPPER(%s) OR
-            UPPER(Video.descr) LIKE UPPER(%s);
+            Tag.tag LIKE %s OR
+            Video.title LIKE %s OR
+            Video.descr LIKE %s;
             """,("%"+qr+"%"),("%"+qr+"%"),("%"+qr+"%"))
 
         if cat == "Users" :

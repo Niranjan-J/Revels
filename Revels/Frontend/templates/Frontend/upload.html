@@ -1,39 +1,28 @@
-{% extends 'layouts/base.html' %}
+{% extends 'layouts/base.html' %} {% block title %} Upload Video {% endblock title %} {% block body %}
+<form action="{% url 'upload' %}" method="post" class="col col-lg-8 text-center" style="margin: auto; margin-top: 1em;">
+    {% csrf_token %}
+    <h3>Upload Video</h3><br>
+    <div class="form-group">
+        <input type="text" class="form-control" id="title" name="title" aria-describedby="titleHelp" placeholder="Enter Video Title">
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" id="url" name="url" aria-describedby="urlHelp" placeholder="Enter Video URL">
+    </div>
+    <div class="form-group">
+        <textarea class="form-control" id="descr" name="descr" rows="4" placeholder="Enter Video description"></textarea>
+    </div>
 
+    <div class="form-group">
+        <input type="text" class="form-control" id="tags" name="tags" aria-describedby="tagsHelp" placeholder="Enter Tags seperated by comma">
+    </div>
 
-{% block title %}
-    Upload Video
-{% endblock title %}
-
-{% block body %}
-    <form action="{% url 'upload' %}" method="post" class="col col-lg-8 text-center" style="margin: auto; margin-top: 1em;">
-        {% csrf_token %}
-        <h3>Upload Video</h3><br>
-        <div class="form-group">
-          <input type="text" class="form-control" id="title" name="title" aria-describedby="titleHelp" placeholder="Enter Video Title">
-        </div>
-        <div class="form-group">
-          <input type="text" class="form-control" id="url" name="url" aria-describedby="urlHelp" placeholder="Enter Video URL">
-        </div>
-        <div class="form-group">
-            <textarea class="form-control" id="descr" name="descr" rows="4" placeholder="Enter Video description"></textarea>
-        </div>
-        
-        <div class="form-group">
-          <input type="text" class="form-control" id="tags" name="tags" aria-describedby="tagsHelp" placeholder="Enter Tags seperated by space">
-        </div>
-
-        <label for="category" required><b><h3>Category: </h3></b></label><br>
-
-        {% for cat in category %}
-            <div class="form-check form-check-inline">
-              <label class="form-check-label">
-                <input class="form-check-input" type="checkbox" name="box" value="{{ cat.cat_id }}"> {{ cat.text }}<b>
+    <label for="category" required><b><h3>Category: </h3></b></label><br> {% for cat in category %}
+    <div class="form-check form-check-inline">
+        <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="box" value="{{ cat.cat_id }}"> <b>{{ cat.text }}</b>
               </label>
-            </div>
-        {% endfor %}
-        <br><br>
-        <input type="submit" name="submit" value="Upload"  class="btn btn-primary"><br>
-    </form><br>
-    {{ msg }}
-{% endblock body %}
+    </div>
+    {% endfor %}
+    <br><br>
+    <input type="submit" name="submit" value="Upload" class="btn btn-primary"><br>
+</form><br> {{ msg }} {% endblock body %}
