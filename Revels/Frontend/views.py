@@ -295,11 +295,15 @@ def getUserDetails(req,usr):
     channelsdata = (con.query("""
       SELECT * FROM Channel  WHERE user_id = %s
     """,usr))
+    subchannel = con.query("""
+        SELECT * FROM Channel INNER JOIN Subscription ON Channel.channel_id=Subscription.channel_id WHERE Subscription.user_id = %s
+    """,usr)
     return render(req,'Frontend/user.html',{
         "user":userdata,
         "channels":channelsdata,
         "videos":videosdata,
         'owner':owner,
+        'subchannel':subchannel,
     })
 
 def search(req) :
