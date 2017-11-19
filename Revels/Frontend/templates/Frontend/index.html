@@ -1,12 +1,12 @@
 {% extends 'layouts/base.html' %} {% block title %} Revels {% endblock title %} {% block body %}
 <div class="container" style=" margin: auto; margin-top: 3em;margin-bottom: 3em;">
-	<ul class="list-group">
-	    {% for item in category %}
-	    <li>
-	        <a class="list-group-item" href="{% url 'catvideo' item.cat_id %}">{{ item.text }}</a>
-	    </li>
-	    {% endfor %}
-	</ul>	
+    <ul class="list-group">
+        {% for item in category %}
+        <li>
+            <a class="list-group-item" href="{% url 'catvideo' item.cat_id %}">{{ item.text }}</a>
+        </li>
+        {% endfor %}
+    </ul>
 </div>
 
 {% endblock body %}

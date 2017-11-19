@@ -337,7 +337,7 @@ def search(req) :
 
         if cat == "Videos" :
             res = con.query("""
-            SELECT DISTINCT Video.*,Tag.tag FROM Video LEFT JOIN Tag
+            SELECT DISTINCT Video.* FROM Video LEFT JOIN Tag
             ON Video.video_id=Tag.video_id WHERE
             Tag.tag LIKE %s OR
             Video.title LIKE %s OR

@@ -5,7 +5,8 @@
     <ol class="list-group">
         {% for item in vidlist %}
         <li class="row">
-            <a href="{% url 'viewVideo' item.video_id %}" class=" list-group-item col col-lg-10">{{ item.title }}</a> {% if showdel == True %}
+            <a href="{% url 'viewVideo' item.video_id %}" class=" list-group-item col col-lg-10">
+                {{ item.title }}</a> {% if showdel == True %}
             <form action="{% url 'removeVidPl' plid=pl.0.playlist_id vid=item.video_id %}" class="col col-lg-2" method="post" style="margin-top: 0.25em">
                 {% csrf_token %}
                 <input type="submit" value="X" class="btn btn-danger">

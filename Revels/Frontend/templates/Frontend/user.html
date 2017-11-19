@@ -5,7 +5,6 @@
         <article class=" col col-lg-3">
             <h1>{{user.username}}</h1>
             <h4>{{user.firstname}} {{user.lastname}}</h4>
-            <h4>{{user.gender}}</h4>
         </article>
         <hr>
     </section>
@@ -20,7 +19,8 @@
                     <h6>{{channel.description}}</h6>
                 </a>
             </li>
-            {% empty %} <h4 class="text-center" style="width:100%;">No Channels</h4>{% endfor %}
+            {% empty %}
+            <h4 class="text-center" style="width:100%;">No Channels</h4>{% endfor %}
         </ul>
         <br><br>
         <h3><b>Videos</b></h3><br>
@@ -41,7 +41,8 @@
                     </div>
                 </div>
             </div>
-            <br> {% empty %}<h5 class="text-center" style="width:100%;"> No Uploaded Videos </h5>{% endfor %}
+            <br> {% empty %}
+            <h5 class="text-center" style="width:100%;"> No Uploaded Videos </h5>{% endfor %}
         </div>
         <br>
         <h3><b>Subscribed Channels</b></h3>
@@ -53,7 +54,8 @@
                     <h6>{{channel.description}}</h6>
                 </a>
             </li>
-            {% empty %}<h4 class="text-center" style="width:100%;"> No Subsciptions </h4>{% endfor %}
+            {% empty %}
+            <h4 class="text-center" style="width:100%;"> No Subsciptions </h4>{% endfor %}
         </ul>
         <br><br>
         <section class="row " style="margin-bottom: 1em; ">
