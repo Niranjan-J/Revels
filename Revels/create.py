@@ -49,8 +49,3 @@ if __name__=="__main__":
     rel.create_Pl_Vid()
     rel.create_Subscription()
     rel.create_Vid_Cat()
-
-    pl.createTriggers()
-    ch.createTriggers()
-    vid.createTriggers()
-

@@ -31,8 +31,4 @@ class Profile():
             INSERT INTO Profile(user_id,firstname,lastname,gender,avatar) VALUES (%s,%s,%s,%s,%s)
             """,user_id,data['firstname'],data['lastname'],data['gender'],"Please change it"
             )
-        # returns None if there's no error
-        if res == None :
-            return None
-        else :
-            return res
+        return res
