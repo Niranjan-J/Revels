@@ -30,7 +30,7 @@ class SignUp(View):
 
         res = user.createUser(data)
         response = redirect('auth:signin')
-        if res == None :
+        if res == None or 'None' in str(res) :
             return response
         else :
             var = {
