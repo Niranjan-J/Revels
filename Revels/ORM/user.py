@@ -43,11 +43,7 @@ class User():
             #Creates Entry in profile table
             res1 = prf.createProfile(data,user_id)
 
-            if res1 == None :
-                return res1
-
-            #returns None if the transaction completes without errors
-            return None
+            return res1
         else :
             return res
 
