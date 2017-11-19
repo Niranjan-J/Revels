@@ -34,3 +34,43 @@ Drop TRIGGER IF EXISTS playlistDeleteTrigger;
             DELETE FROM Pl_Vid WHERE OLD.playlist_id = playlist_id;
             END;//
             DELIMITER ;
+
+            DROP TRIGGER IF EXISTS checkUserInsert;
+                        DELIMITER //
+                        CREATE TRIGGER checkUserInsert
+                        BEFORE INSERT ON User
+                        FOR EACH ROW
+                        BEGIN
+                          DECLARE msg VARCHAR(100);
+                          IF UPPER(NEW.email) NOT LIKE '%_@_%._%' THEN
+                            set msg = "Please enter a valid email address";
+                            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = msg;
+                          END IF ;
+                            IF UPPER(NEW.username) = '' OR UPPER(NEW.username) = NULL THEN
+                set msg = "Please enter an Username";
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = msg;
+              END IF ;
+                        END//
+                          DELIMITER ;
+
+
+
+            DROP TRIGGER IF EXISTS checkProfileInsert;
+            DELIMITER //
+            CREATE TRIGGER checkProfileInsert
+            BEFORE INSERT ON Profile
+            FOR EACH ROW
+            BEGIN
+              DECLARE msg VARCHAR(100);
+              IF UPPER(NEW.firstname) = '' OR UPPER(NEW.firstname) = NULL THEN
+                DELETE FROM User WHERE User.user_id = NEW.user_id;
+                set msg = "Please enter a Firstname";
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = msg;
+              END IF ;
+               IF UPPER(NEW.lastname) = '' OR UPPER(NEW.lastname) = NULL THEN
+                DELETE FROM User WHERE User.user_id = NEW.user_id;
+                set msg = "Please enter a Lastname";
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = msg;
+              END IF ;
+
+            END//

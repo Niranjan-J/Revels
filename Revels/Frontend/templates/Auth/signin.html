@@ -7,10 +7,12 @@
 {% endblock %}
 
 {% block body %}
-  <h4>{{ error }}</h4>
 
   <form action="{% url 'auth:signin' %}" method="post" class="col col-lg-4 text-center" style="margin: auto; margin-top: 5em;">
     {% csrf_token %}
+    <div class="alert alert-danger" role="alert">
+      {{ error }}
+    </div>
     <h2>Sign In</h2>
     <div class="form-group">
       <label for="email">Email address</label>
